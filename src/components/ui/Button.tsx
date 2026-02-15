@@ -43,12 +43,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <motion.button
+      <button
         ref={ref}
         className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
         disabled={disabled || isLoading}
-        whileHover={{ scale: disabled ? 1 : 1.02 }}
-        whileTap={{ scale: disabled ? 1 : 0.98 }}
         {...props}
       >
         {isLoading ? (
@@ -79,7 +77,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {rightIcon && <span className="inline-flex">{rightIcon}</span>}
           </>
         )}
-      </motion.button>
+      </button>
     )
   }
 )
