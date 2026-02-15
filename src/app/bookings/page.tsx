@@ -18,6 +18,7 @@ import {
 import Button from '@/components/ui/Button'
 import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 interface Booking {
   id: string
@@ -97,7 +98,7 @@ export default function MyBookingsPage() {
     
     // Listen for auth changes
     const supabase = createClient()
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       if (session?.user) {
         setUser({ id: session.user.id })
         fetchUserAndBookings()
