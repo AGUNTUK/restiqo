@@ -69,6 +69,7 @@ export default function ProfilePage() {
         id: session.user.id,
         email: session.user.email || '',
         full_name: session.user.user_metadata?.full_name || '',
+        avatar_url: session.user.user_metadata?.avatar_url || null,
         phone: null,
         address: null,
         role: session.user.user_metadata?.role || 'guest',
