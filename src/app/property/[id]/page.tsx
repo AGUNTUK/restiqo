@@ -357,25 +357,25 @@ export default function PropertyDetailsPage() {
                 </div>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {reviews.map((review) => (
-                  <div key={review.id} className="clay-sm p-4">
-                    <div className="flex items-start gap-4">
+                  <div key={review.id} className="neu-card p-4">
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <img
                         src={review.user.avatar}
                         alt={review.user.name}
-                        className="w-12 h-12 rounded-full object-cover"
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <h4 className="font-medium text-gray-900">{review.user.name}</h4>
-                          <span className="text-sm text-gray-500">{review.date}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1 gap-1">
+                          <h4 className="font-medium text-[#1E293B]">{review.user.name}</h4>
+                          <span className="text-xs sm:text-sm text-[#64748B]">{review.date}</span>
                         </div>
                         <div className="flex items-center gap-1 mb-2">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 ${
+                              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                                 i < review.rating
                                   ? 'fill-yellow-400 text-yellow-400'
                                   : 'text-gray-300'
@@ -383,7 +383,7 @@ export default function PropertyDetailsPage() {
                             />
                           ))}
                         </div>
-                        <p className="text-gray-600">{review.comment}</p>
+                        <p className="text-sm sm:text-base text-[#64748B]">{review.comment}</p>
                       </div>
                     </div>
                   </div>
@@ -401,14 +401,14 @@ export default function PropertyDetailsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
-              <div className="clay-sm p-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin className="w-5 h-5 text-brand-primary" />
-                  <span className="text-gray-700">{property.address}, {property.city}</span>
+              <h2 className="text-lg sm:text-xl font-semibold text-[#1E293B] mb-3 sm:mb-4">Location</h2>
+              <div className="neu-card p-4">
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-brand-primary flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-[#64748B]">{property.address}, {property.city}</span>
                 </div>
-                <div className="h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-                  <p className="text-gray-500">Map integration coming soon</p>
+                <div className="h-48 sm:h-64 bg-gray-200 rounded-xl flex items-center justify-center">
+                  <p className="text-sm sm:text-base text-[#64748B]">Map integration coming soon</p>
                 </div>
               </div>
             </motion.div>
@@ -420,25 +420,25 @@ export default function PropertyDetailsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="clay-lg p-6 sticky top-24"
+              className="neu-xl p-4 sm:p-6 lg:sticky lg:top-24"
             >
-              <div className="flex items-baseline justify-between mb-6">
+              <div className="flex items-baseline justify-between mb-4 sm:mb-6">
                 <div>
-                  <span className="text-2xl font-bold text-gray-900">
+                  <span className="text-xl sm:text-2xl font-bold text-[#1E293B]">
                     {formatPrice(property.price_per_night)}
                   </span>
-                  <span className="text-gray-500"> / night</span>
+                  <span className="text-[#64748B]"> / night</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-medium">{property.rating.toFixed(1)}</span>
+                  <span className="font-medium text-[#1E293B]">{property.rating.toFixed(1)}</span>
                 </div>
               </div>
 
-              <div className="space-y-4 mb-6">
+              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-[#1E293B] mb-1">
                       Check in
                     </label>
                     <input
@@ -447,11 +447,11 @@ export default function PropertyDetailsPage() {
                       onChange={(e) =>
                         setBookingData({ ...bookingData, checkIn: e.target.value })
                       }
-                      className="clay-input w-full px-3 py-2 text-sm"
+                      className="neu-input w-full px-3 py-2 text-sm text-[#1E293B]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-[#1E293B] mb-1">
                       Check out
                     </label>
                     <input
@@ -460,13 +460,13 @@ export default function PropertyDetailsPage() {
                       onChange={(e) =>
                         setBookingData({ ...bookingData, checkOut: e.target.value })
                       }
-                      className="clay-input w-full px-3 py-2 text-sm"
+                      className="neu-input w-full px-3 py-2 text-sm text-[#1E293B]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-1">
                     Guests
                   </label>
                   <select
@@ -474,7 +474,7 @@ export default function PropertyDetailsPage() {
                     onChange={(e) =>
                       setBookingData({ ...bookingData, guests: parseInt(e.target.value) })
                     }
-                    className="clay-input w-full px-3 py-2 text-sm appearance-none"
+                    className="neu-input w-full px-3 py-2 text-sm appearance-none text-[#1E293B]"
                   >
                     {Array.from({ length: property.max_guests }, (_, i) => i + 1).map((num) => (
                       <option key={num} value={num}>

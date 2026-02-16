@@ -762,25 +762,25 @@ export default function HomePage() {
       </section>
 
       {/* Featured Apartments */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
                 Featured Apartments
               </h2>
-              <p className="text-[#64748B]">
+              <p className="text-sm sm:text-base text-[#64748B]">
                 Handpicked apartments for your perfect stay
               </p>
             </div>
-            <Link href="/apartments">
+            <Link href="/apartments" className="self-start sm:self-auto">
               <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 View All
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             {featuredApartments.map((property, index) => (
               <motion.div
                 key={property.id}
@@ -798,26 +798,26 @@ export default function HomePage() {
       </section>
 
       {/* Popular Hotels */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="neu-panel-inset p-8 sm:p-12">
-            <div className="flex items-center justify-between mb-12">
+          <div className="neu-panel-inset p-4 sm:p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
                   Popular Hotels
                 </h2>
-                <p className="text-[#64748B]">
+                <p className="text-sm sm:text-base text-[#64748B]">
                   Top-rated hotels with exceptional service
                 </p>
               </div>
-              <Link href="/hotels">
+              <Link href="/hotels" className="self-start sm:self-auto">
                 <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
                   View All
                 </Button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
               {popularHotels.map((property, index) => (
                 <motion.div
                   key={property.id}
@@ -836,25 +836,25 @@ export default function HomePage() {
       </section>
 
       {/* Trending Tours */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
                 Trending Tours
               </h2>
-              <p className="text-[#64748B]">
+              <p className="text-sm sm:text-base text-[#64748B]">
                 Unforgettable experiences across Bangladesh
               </p>
             </div>
-            <Link href="/tours">
+            <Link href="/tours" className="self-start sm:self-auto">
               <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 View All
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             {trendingTours.map((property, index) => (
               <motion.div
                 key={property.id}
@@ -872,19 +872,19 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">
               Why Choose Restiqo?
             </h2>
-            <p className="text-[#64748B] max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#64748B] max-w-2xl mx-auto">
               We provide the best travel experience with premium properties,
               secure bookings, and exceptional customer service.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[
               {
                 icon: '🏠',

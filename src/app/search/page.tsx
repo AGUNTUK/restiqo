@@ -296,42 +296,45 @@ function SearchContent() {
     filters.amenities.length
 
   return (
-    <div className="min-h-screen pt-20">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen pt-16 sm:pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Search Header */}
-        <div className="clay-lg p-6 mb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Search by location..."
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                leftIcon={<Search className="w-5 h-5" />}
-              />
-            </div>
-            <div className="flex gap-3">
-              <Button
-                variant={showFilters ? 'primary' : 'outline'}
-                onClick={() => setShowFilters(!showFilters)}
-                leftIcon={<SlidersHorizontal className="w-5 h-5" />}
-              >
-                Filters
-                {activeFiltersCount > 0 && (
-                  <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-sm">
-                    {activeFiltersCount}
-                  </span>
-                )}
-              </Button>
-              <select
-                value={filters.sortBy}
-                onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                className="clay-input px-4 py-2 appearance-none cursor-pointer"
-              >
-                <option value="recommended">Recommended</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Highest Rated</option>
-              </select>
+        <div className="neu-xl p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search by location..."
+                  value={filters.location}
+                  onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+                  leftIcon={<Search className="w-5 h-5" />}
+                />
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant={showFilters ? 'primary' : 'outline'}
+                  onClick={() => setShowFilters(!showFilters)}
+                  leftIcon={<SlidersHorizontal className="w-5 h-5" />}
+                  className="flex-1 sm:flex-initial"
+                >
+                  Filters
+                  {activeFiltersCount > 0 && (
+                    <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-sm">
+                      {activeFiltersCount}
+                    </span>
+                  )}
+                </Button>
+                <select
+                  value={filters.sortBy}
+                  onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+                  className="neu-input px-3 sm:px-4 py-2 appearance-none cursor-pointer text-sm sm:text-base flex-1 sm:flex-initial"
+                >
+                  <option value="recommended">Recommended</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -341,18 +344,18 @@ function SearchContent() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mt-6 pt-6 border-t border-gray-200"
+              className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {/* Property Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Property Type
                   </label>
                   <select
                     value={filters.type}
                     onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-                    className="clay-input w-full px-4 py-2 appearance-none"
+                    className="neu-input w-full px-4 py-2.5 appearance-none text-[#1E293B]"
                   >
                     <option value="all">All Types</option>
                     <option value="apartment">Apartments</option>
@@ -363,7 +366,7 @@ function SearchContent() {
 
                 {/* Price Range */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Price Range
                   </label>
                   <select
@@ -371,7 +374,7 @@ function SearchContent() {
                     onChange={(e) =>
                       setFilters({ ...filters, priceRange: parseInt(e.target.value) })
                     }
-                    className="clay-input w-full px-4 py-2 appearance-none"
+                    className="neu-input w-full px-4 py-2.5 appearance-none text-[#1E293B]"
                   >
                     {priceRanges.map((range, index) => (
                       <option key={index} value={index}>
@@ -383,7 +386,7 @@ function SearchContent() {
 
                 {/* Min Rating */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Minimum Rating
                   </label>
                   <select
@@ -391,7 +394,7 @@ function SearchContent() {
                     onChange={(e) =>
                       setFilters({ ...filters, minRating: parseFloat(e.target.value) })
                     }
-                    className="clay-input w-full px-4 py-2 appearance-none"
+                    className="neu-input w-full px-4 py-2.5 appearance-none text-[#1E293B]"
                   >
                     <option value="0">Any Rating</option>
                     <option value="4.5">4.5+ Stars</option>
@@ -415,8 +418,8 @@ function SearchContent() {
               </div>
 
               {/* Amenities */}
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+              <div className="mt-4 sm:mt-6">
+                <label className="block text-sm font-medium text-[#1E293B] mb-3">
                   Amenities
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -424,10 +427,10 @@ function SearchContent() {
                     <button
                       key={amenity}
                       onClick={() => toggleAmenity(amenity)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm font-medium transition-all ${
                         filters.amenities.includes(amenity)
                           ? 'bg-brand-primary text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          : 'neu-badge text-[#64748B] hover:bg-gray-200'
                       }`}
                     >
                       {amenity}
@@ -440,16 +443,16 @@ function SearchContent() {
         </div>
 
         {/* Results */}
-        <div className="mb-6">
-          <p className="text-gray-600">
+        <div className="mb-4 sm:mb-6">
+          <p className="text-sm sm:text-base text-[#64748B]">
             {loading ? 'Searching...' : `${properties.length} properties found`}
           </p>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="clay-card overflow-hidden">
+              <div key={i} className="neu-card overflow-hidden">
                 <div className="skeleton h-56" />
                 <div className="p-5 space-y-3">
                   <div className="skeleton h-4 w-3/4" />
@@ -460,13 +463,13 @@ function SearchContent() {
             ))}
           </div>
         ) : properties.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="clay-lg inline-block p-8">
-              <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <div className="text-center py-12 sm:py-16">
+            <div className="neu-xl inline-block p-6 sm:p-8">
+              <Search className="w-12 sm:w-16 h-12 sm:h-16 text-[#94A3B8] mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-[#1E293B] mb-2">
                 No properties found
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm sm:text-base text-[#64748B] mb-4">
                 Try adjusting your filters or search criteria
               </p>
               <Button variant="primary" onClick={clearFilters}>
@@ -475,7 +478,7 @@ function SearchContent() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             {properties.map((property, index) => (
               <motion.div
                 key={property.id}
