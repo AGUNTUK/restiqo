@@ -89,9 +89,9 @@ function LoginContent() {
   if (authLoading) {
     return (
       <div className="w-full max-w-md">
-        <div className="clay-lg p-6 sm:p-8 text-center">
+        <div className="neu-xl p-6 sm:p-8 text-center">
           <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-[#64748B]">Loading...</p>
         </div>
       </div>
     )
@@ -104,13 +104,13 @@ function LoginContent() {
       transition={{ duration: 0.5 }}
       className="w-full max-w-md"
     >
-      <div className="clay-lg p-6 sm:p-8">
+      <div className="neu-xl p-6 sm:p-8">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#1E293B] mb-2">
             Welcome Back
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-[#64748B] text-sm sm:text-base">
             Sign in to continue your journey
           </p>
         </div>
@@ -118,19 +118,19 @@ function LoginContent() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[#1E293B] mb-2">
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full pl-12 pr-4 py-3 rounded-xl border ${
-                  errors.email ? 'border-red-500' : 'border-gray-200'
-                } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                className={`neu-input w-full pl-12 pr-4 py-3.5 text-[#1E293B] ${
+                  errors.email ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
+                }`}
               />
             </div>
             {errors.email && (
@@ -139,19 +139,19 @@ function LoginContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[#1E293B] mb-2">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className={`w-full pl-12 pr-12 py-3 rounded-xl border ${
-                  errors.password ? 'border-red-500' : 'border-gray-200'
-                } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                className={`neu-input w-full pl-12 pr-12 py-3.5 text-[#1E293B] ${
+                  errors.password ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
+                }`}
               />
               <button
                 type="button"
@@ -159,9 +159,9 @@ function LoginContent() {
                 className="absolute right-4 top-1/2 -translate-y-1/2 focus:outline-none"
               >
                 {showPassword ? (
-                  <EyeOff className="w-5 h-5 text-gray-400" />
+                  <EyeOff className="w-5 h-5 text-[#64748B]" />
                 ) : (
-                  <Eye className="w-5 h-5 text-gray-400" />
+                  <Eye className="w-5 h-5 text-[#64748B]" />
                 )}
               </button>
             </div>
@@ -174,9 +174,9 @@ function LoginContent() {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="w-4 h-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+                className="w-4 h-4 rounded border-none text-brand-primary focus:ring-brand-primary neu-input"
               />
-              <span className="ml-2 text-gray-600">Remember me</span>
+              <span className="ml-2 text-[#64748B]">Remember me</span>
             </label>
             <Link
               href="/auth/forgot-password"
@@ -189,7 +189,7 @@ function LoginContent() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-6 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="neu-button-primary w-full py-3.5 px-6 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
@@ -208,10 +208,10 @@ function LoginContent() {
         {/* Divider */}
         <div className="relative my-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200" />
+            <div className="w-full neu-divider" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500">
+            <span className="px-4 bg-[#EEF2F6] text-[#64748B]">
               Or continue with
             </span>
           </div>
@@ -221,7 +221,7 @@ function LoginContent() {
         <div className="space-y-3">
           <button
             onClick={handleGoogleSignIn}
-            className="clay-button w-full flex items-center justify-center gap-3 py-3"
+            className="neu-button w-full flex items-center justify-center gap-3 py-3.5"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -241,12 +241,12 @@ function LoginContent() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span className="font-medium text-gray-700">Continue with Google</span>
+            <span className="font-medium text-[#1E293B]">Continue with Google</span>
           </button>
         </div>
 
         {/* Sign Up Link */}
-        <p className="mt-8 text-center text-gray-600">
+        <p className="mt-8 text-center text-[#64748B]">
           Don't have an account?{' '}
           <Link
             href="/auth/signup"
@@ -265,9 +265,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12 pt-28 sm:pt-32">
       <Suspense fallback={
         <div className="w-full max-w-md">
-          <div className="clay-lg p-6 sm:p-8 text-center">
+          <div className="neu-xl p-6 sm:p-8 text-center">
             <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
-            <p className="text-gray-600">Loading...</p>
+            <p className="text-[#64748B]">Loading...</p>
           </div>
         </div>
       }>

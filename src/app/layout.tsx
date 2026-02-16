@@ -102,11 +102,12 @@ export default async function RootLayout({
               toastOptions={{
                 duration: 4000,
                 style: {
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
+                  background: '#EEF2F6',
+                  border: 'none',
                   borderRadius: '16px',
-                  boxShadow: '8px 8px 16px rgba(163, 177, 198, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.8)',
+                  boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.9)',
+                  color: '#1E293B',
+                  padding: '16px',
                 },
                 success: {
                   iconTheme: {

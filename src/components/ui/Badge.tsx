@@ -14,15 +14,15 @@ export default function Badge({
   className = '',
 }: BadgeProps) {
   const variants = {
-    default: 'clay-badge text-gray-700',
-    primary: 'clay-badge-primary',
-    accent: 'clay-badge-accent',
-    secondary: 'bg-brand-secondary text-white',
-    outline: 'border-2 border-brand-primary text-brand-primary bg-transparent',
+    default: 'neu-badge text-[#64748B]',
+    primary: 'neu-badge-primary',
+    accent: 'neu-badge-accent',
+    secondary: 'bg-brand-secondary text-white shadow-[3px_3px_6px_rgba(33,136,119,0.25),-3px_-3px_6px_rgba(255,255,255,0.8)]',
+    outline: 'text-brand-primary bg-[#EEF2F6] shadow-[3px_3px_6px_rgba(0,0,0,0.06),-3px_-3px_6px_rgba(255,255,255,0.8)]',
   }
 
   const sizes = {
-    sm: 'px-2 py-0.5 text-xs',
+    sm: 'px-2.5 py-0.5 text-xs',
     md: 'px-3 py-1 text-sm',
     lg: 'px-4 py-1.5 text-base',
   }

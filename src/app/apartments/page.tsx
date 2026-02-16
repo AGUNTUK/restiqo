@@ -232,27 +232,27 @@ export default function ApartmentsPage() {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="relative py-16 px-4 bg-gradient-to-br from-brand-primary/10 to-brand-accent/10">
+      <section className="relative py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-primary/20 mb-4">
-              <Home className="w-8 h-8 text-brand-primary" />
+            <div className="neu-icon-primary w-16 h-16 mx-auto mb-4 rounded-2xl">
+              <Home className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
               Find Your Perfect Apartment
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-[#64748B] max-w-2xl mx-auto">
               Discover handpicked apartments across Bangladesh for your perfect stay
             </p>
           </motion.div>
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
-            <div className="clay-lg p-2 flex gap-2">
+            <div className="neu-xl p-2 flex gap-2">
               <Input
                 placeholder="Search apartments by name or location..."
                 value={searchQuery}
@@ -276,10 +276,10 @@ export default function ApartmentsPage() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                     selectedCategory === category.id
-                      ? 'bg-brand-primary text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'neu-filter-active'
+                      : 'neu-filter'
                   }`}
                 >
                   {category.label}
@@ -290,7 +290,7 @@ export default function ApartmentsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="clay-input px-4 py-2 appearance-none cursor-pointer"
+              className="neu-input px-4 py-2.5 appearance-none cursor-pointer pr-10 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px] bg-[right_12px_center] bg-no-repeat"
             >
               <option value="recommended">Recommended</option>
               <option value="price-low">Price: Low to High</option>
@@ -300,7 +300,7 @@ export default function ApartmentsPage() {
           </div>
 
           {/* Results Count */}
-          <p className="text-gray-600 mb-6">
+          <p className="text-[#64748B] mb-6">
             {loading ? 'Loading...' : `${apartments.length} apartments found`}
           </p>
 
@@ -308,7 +308,7 @@ export default function ApartmentsPage() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="clay-card overflow-hidden">
+                <div key={i} className="neu-card overflow-hidden">
                   <div className="skeleton h-56" />
                   <div className="p-5 space-y-3">
                     <div className="skeleton h-4 w-3/4" />
@@ -320,12 +320,12 @@ export default function ApartmentsPage() {
             </div>
           ) : apartments.length === 0 ? (
             <div className="text-center py-16">
-              <div className="clay-lg inline-block p-8">
-                <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="neu-xl inline-block p-8">
+                <Home className="w-16 h-16 text-[#94A3B8] mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-[#1E293B] mb-2">
                   No apartments found
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-[#64748B] mb-4">
                   Try adjusting your search or filters
                 </p>
                 <Button

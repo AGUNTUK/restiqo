@@ -39,7 +39,7 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-[#EEF2F6]/80 backdrop-blur-sm z-50"
           />
 
           {/* Modal Container */}
@@ -49,22 +49,22 @@ export default function Modal({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', duration: 0.5 }}
-              className={`w-full ${sizes[size]} clay-lg relative my-8`}
+              className={`w-full ${sizes[size]} neu-modal relative my-8`}
             >
               {/* Header */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                <div className="flex items-center justify-between p-6">
                   {title && (
-                    <h2 className="text-xl font-semibold text-gray-900">
+                    <h2 className="text-xl font-semibold text-[#1E293B]">
                       {title}
                     </h2>
                   )}
                   {showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors ml-auto"
+                      className="p-2.5 rounded-xl neu-button transition-all duration-200 hover:scale-105 ml-auto"
                     >
-                      <X className="w-5 h-5 text-gray-500" />
+                      <X className="w-5 h-5 text-[#64748B]" />
                     </button>
                   )}
                 </div>

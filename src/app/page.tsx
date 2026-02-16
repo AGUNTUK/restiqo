@@ -503,7 +503,7 @@ export default function HomePage() {
               transform: 'scale(1.1)',
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-brand-background-light/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1E293B]/60 via-[#1E293B]/40 to-[#EEF2F6]" />
         </div>
 
         {/* Content - with padding for fixed header */}
@@ -528,20 +528,20 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="clay-lg p-4 sm:p-6 md:p-8 max-w-5xl mx-auto"
+            className="neu-xl p-4 sm:p-6 md:p-8 max-w-5xl mx-auto"
           >
             {/* Service Tabs */}
             <div className="mb-4 overflow-x-auto">
-              <div className="flex bg-gray-100/80 rounded-lg p-1 gap-1 min-w-max">
+              <div className="neu-tabs flex p-1.5 gap-1 min-w-max">
                 {serviceTabs.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
                     onClick={() => handleTabChange(tab.id)}
-                    className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base ${
+                    className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl font-medium transition-all duration-200 text-sm sm:text-base ${
                       activeTab === tab.id
-                        ? 'bg-brand-primary text-white shadow-md'
-                        : 'text-gray-600 hover:bg-white/60'
+                        ? 'neu-tab-active'
+                        : 'neu-tab text-[#64748B]'
                     }`}
                   >
                     <tab.icon className="w-4 h-4 flex-shrink-0" />
@@ -556,11 +556,11 @@ export default function HomePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 {/* Location */}
                 <div className="lg:col-span-1 relative" ref={locationDropdownRef}>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Location
                   </label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
                     <input
                       type="text"
                       placeholder="Where are you going?"
@@ -570,13 +570,13 @@ export default function HomePage() {
                         setIsLocationDropdownOpen(true)
                       }}
                       onFocus={() => setIsLocationDropdownOpen(true)}
-                      className="clay-input w-full pl-10 pr-4 py-3 text-gray-900"
+                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
                     />
                   </div>
                   
                   {/* Location Suggestions Dropdown */}
                   {isLocationDropdownOpen && searchData.location.length > 0 && filteredLocations.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 clay-lg p-2 z-50 max-h-64 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-2 neu-dropdown p-2 z-50 max-h-64 overflow-y-auto">
                       {filteredLocations.map((loc, index) => (
                         <button
                           key={index}
@@ -585,13 +585,13 @@ export default function HomePage() {
                             setSearchData({ ...searchData, location: loc.name })
                             setIsLocationDropdownOpen(false)
                           }}
-                          className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-between"
+                          className="neu-dropdown-item w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between"
                         >
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-brand-primary" />
-                            <span className="font-medium text-gray-900">{loc.name}</span>
+                            <span className="font-medium text-[#1E293B]">{loc.name}</span>
                           </div>
-                          <span className="text-xs text-gray-500">{loc.region}</span>
+                          <span className="text-xs text-[#64748B]">{loc.region}</span>
                         </button>
                       ))}
                     </div>
@@ -600,66 +600,66 @@ export default function HomePage() {
 
                 {/* Check In */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Check In
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
                     <input
                       type="date"
                       value={searchData.checkIn}
                       onChange={(e) =>
                         setSearchData({ ...searchData, checkIn: e.target.value })
                       }
-                      className="clay-input w-full pl-10 pr-4 py-3 text-gray-900"
+                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
                     />
                   </div>
                 </div>
 
                 {/* Check Out */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Check Out
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
                     <input
                       type="date"
                       value={searchData.checkOut}
                       onChange={(e) =>
                         setSearchData({ ...searchData, checkOut: e.target.value })
                       }
-                      className="clay-input w-full pl-10 pr-4 py-3 text-gray-900"
+                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
                     />
                   </div>
                 </div>
 
                 {/* Guests */}
                 <div className="relative" ref={guestDropdownRef}>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
                     Guests
                   </label>
                   <button
                     type="button"
                     onClick={() => setIsGuestDropdownOpen(!isGuestDropdownOpen)}
-                    className="clay-input w-full pl-10 pr-10 py-3 text-gray-900 text-left flex items-center justify-between"
+                    className="neu-input w-full pl-10 pr-10 py-3 text-[#1E293B] text-left flex items-center justify-between"
                   >
                     <span className="truncate">{getGuestDisplayText()}</span>
-                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  <Users className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
+                  <Users className="absolute left-3 top-[38px] w-5 h-5 text-[#64748B]" />
                   
                   {/* Guest Dropdown */}
                   {isGuestDropdownOpen && (
                     <div 
-                      className="absolute top-full left-0 right-0 mt-2 clay-lg p-4 z-50"
+                      className="absolute top-full left-0 right-0 mt-2 neu-dropdown p-4 z-50"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {/* Adults */}
-                      <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                      <div className="flex items-center justify-between py-3">
                         <div>
-                          <p className="font-medium text-gray-900">Adults</p>
-                          <p className="text-sm text-gray-500">Ages 13 or above</p>
+                          <p className="font-medium text-[#1E293B]">Adults</p>
+                          <p className="text-sm text-[#64748B]">Ages 13 or above</p>
                         </div>
                         <div className="flex items-center gap-3">
                           <button
@@ -668,7 +668,7 @@ export default function HomePage() {
                               e.stopPropagation()
                               updateGuests('adults', false)
                             }}
-                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-primary hover:text-brand-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                             disabled={guestCounts.adults <= 1}
                           >
                             <Minus className="w-4 h-4" />
@@ -680,7 +680,7 @@ export default function HomePage() {
                               animate={{ y: 0, opacity: 1 }}
                               exit={{ y: 20, opacity: 0 }}
                               transition={{ duration: 0.2 }}
-                              className="absolute inset-0 flex items-center justify-center font-medium"
+                              className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
                             >
                               {guestCounts.adults}
                             </motion.span>
@@ -691,7 +691,7 @@ export default function HomePage() {
                               e.stopPropagation()
                               updateGuests('adults', true)
                             }}
-                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-primary hover:text-brand-primary transition-colors"
+                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -701,8 +701,8 @@ export default function HomePage() {
                       {/* Children */}
                       <div className="flex items-center justify-between py-3">
                         <div>
-                          <p className="font-medium text-gray-900">Children</p>
-                          <p className="text-sm text-gray-500">Ages 2-12</p>
+                          <p className="font-medium text-[#1E293B]">Children</p>
+                          <p className="text-sm text-[#64748B]">Ages 2-12</p>
                         </div>
                         <div className="flex items-center gap-3">
                           <button
@@ -711,7 +711,7 @@ export default function HomePage() {
                               e.stopPropagation()
                               updateGuests('children', false)
                             }}
-                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-primary hover:text-brand-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                             disabled={guestCounts.children <= 0}
                           >
                             <Minus className="w-4 h-4" />
@@ -723,7 +723,7 @@ export default function HomePage() {
                               animate={{ y: 0, opacity: 1 }}
                               exit={{ y: 20, opacity: 0 }}
                               transition={{ duration: 0.2 }}
-                              className="absolute inset-0 flex items-center justify-center font-medium"
+                              className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
                             >
                               {guestCounts.children}
                             </motion.span>
@@ -734,7 +734,7 @@ export default function HomePage() {
                               e.stopPropagation()
                               updateGuests('children', true)
                             }}
-                            className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-brand-primary hover:text-brand-primary transition-colors"
+                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -766,10 +766,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
                 Featured Apartments
               </h2>
-              <p className="text-gray-600">
+              <p className="text-[#64748B]">
                 Handpicked apartments for your perfect stay
               </p>
             </div>
@@ -798,37 +798,39 @@ export default function HomePage() {
       </section>
 
       {/* Popular Hotels */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                Popular Hotels
-              </h2>
-              <p className="text-gray-600">
-                Top-rated hotels with exceptional service
-              </p>
+          <div className="neu-panel-inset p-8 sm:p-12">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+                  Popular Hotels
+                </h2>
+                <p className="text-[#64748B]">
+                  Top-rated hotels with exceptional service
+                </p>
+              </div>
+              <Link href="/hotels">
+                <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                  View All
+                </Button>
+              </Link>
             </div>
-            <Link href="/hotels">
-              <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                View All
-              </Button>
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-            {popularHotels.map((property, index) => (
-              <motion.div
-                key={property.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="h-full"
-              >
-                <Card property={property} />
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+              {popularHotels.map((property, index) => (
+                <motion.div
+                  key={property.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="h-full"
+                >
+                  <Card property={property} />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -838,10 +840,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
                 Trending Tours
               </h2>
-              <p className="text-gray-600">
+              <p className="text-[#64748B]">
                 Unforgettable experiences across Bangladesh
               </p>
             </div>
@@ -870,13 +872,13 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">
               Why Choose Restiqo?
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-[#64748B] max-w-2xl mx-auto">
               We provide the best travel experience with premium properties,
               secure bookings, and exceptional customer service.
             </p>
@@ -911,13 +913,13 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="clay-card p-6 text-center"
+                className="neu-card p-6 text-center"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-[#1E293B] mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
+                <p className="text-[#64748B] text-sm">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -932,7 +934,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="clay-primary p-8 md:p-12 text-center text-white"
+            className="neu-primary p-8 md:p-12 text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to List Your Property?
@@ -943,9 +945,9 @@ export default function HomePage() {
             </p>
             <Link href="/host/properties/new">
               <Button
-                variant="accent"
+                variant="default"
                 size="lg"
-                className="bg-white text-brand-primary hover:bg-gray-100"
+                className="bg-white text-brand-primary"
               >
                 Become a Host
               </Button>

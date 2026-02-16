@@ -89,11 +89,11 @@ export default function Navbar() {
     return '/dashboard'
   }
 
-  // Get role badge color
-  const getRoleBadgeColor = () => {
-    if (isAdmin) return 'bg-purple-100 text-purple-700'
-    if (isHost) return 'bg-blue-100 text-blue-700'
-    return 'bg-green-100 text-green-700'
+  // Get role badge style
+  const getRoleBadgeStyle = () => {
+    if (isAdmin) return 'neu-badge bg-purple-500 text-white shadow-[3px_3px_6px_rgba(168,85,247,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]'
+    if (isHost) return 'neu-badge bg-blue-500 text-white shadow-[3px_3px_6px_rgba(59,130,246,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]'
+    return 'neu-badge-primary'
   }
 
   return (
@@ -102,8 +102,8 @@ export default function Navbar() {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${
         isScrolled
-          ? 'bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_rgba(163,177,198,0.3)] border-b border-white/20'
-          : 'bg-white/30 backdrop-blur-md border-b border-white/10'
+          ? 'bg-[#EEF2F6]/90 backdrop-blur-md shadow-[0_8px_16px_rgba(0,0,0,0.08)]'
+          : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,24 +126,18 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative text-sm font-medium transition-colors ${
+                className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
                   isActive(link.href)
-                    ? 'text-brand-primary'
-                    : 'text-gray-700 hover:text-brand-primary'
+                    ? 'neu-nav-item-active'
+                    : 'neu-nav-item hover:shadow-[4px_4px_8px_rgba(0,0,0,0.06),-4px_-4px_8px_rgba(255,255,255,0.8)]'
                 }`}
               >
                 {link.label}
-                {isActive(link.href) && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-brand-primary rounded-full"
-                  />
-                )}
               </Link>
             ))}
           </div>
@@ -160,7 +154,7 @@ export default function Navbar() {
             )}
             
             {isLoading ? (
-              <div className="w-20 h-9 bg-gray-200 rounded-lg animate-pulse" />
+              <div className="w-20 h-9 rounded-xl skeleton" />
             ) : isAuthenticated ? (
               <div className="relative profile-dropdown">
                 <button
@@ -168,7 +162,7 @@ export default function Navbar() {
                     e.stopPropagation()
                     setIsProfileOpen(!isProfileOpen)
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl neu-button transition-all duration-200"
                 >
                   {profile?.avatar_url ? (
                     <img
@@ -177,14 +171,14 @@ export default function Navbar() {
                       className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-brand-primary/10 flex items-center justify-center">
-                      <User className="w-4 h-4 text-brand-primary" />
+                    <div className="w-8 h-8 rounded-full neu-icon-primary">
+                      <User className="w-4 h-4" />
                     </div>
                   )}
-                  <span className="text-sm font-medium text-gray-700 max-w-[100px] truncate">
+                  <span className="text-sm font-medium text-[#1E293B] max-w-[100px] truncate">
                     {profile?.full_name || 'User'}
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Profile Dropdown */}
@@ -194,15 +188,15 @@ export default function Navbar() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
+                      className="absolute right-0 mt-2 w-64 neu-dropdown overflow-hidden"
                     >
                       {/* User Info Header */}
-                      <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                        <p className="font-medium text-gray-900 truncate">
+                      <div className="px-4 py-3 bg-[#EEF2F6]">
+                        <p className="font-medium text-[#1E293B] truncate">
                           {profile?.full_name || 'User'}
                         </p>
-                        <p className="text-sm text-gray-500 truncate">{user?.email}</p>
-                        <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeColor()}`}>
+                        <p className="text-sm text-[#64748B] truncate">{user?.email}</p>
+                        <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeStyle()}`}>
                           {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
                         </span>
                       </div>
@@ -213,9 +207,9 @@ export default function Navbar() {
                         <Link
                           href={getDashboardLink()}
                           onClick={() => setIsProfileOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                         >
-                          <LayoutDashboard className="w-5 h-5" />
+                          <LayoutDashboard className="w-5 h-5 text-[#64748B]" />
                           <span>Dashboard</span>
                         </Link>
 
@@ -223,9 +217,9 @@ export default function Navbar() {
                         <Link
                           href="/dashboard?tab=bookings"
                           onClick={() => setIsProfileOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                         >
-                          <Calendar className="w-5 h-5" />
+                          <Calendar className="w-5 h-5 text-[#64748B]" />
                           <span>My Bookings</span>
                         </Link>
 
@@ -233,9 +227,9 @@ export default function Navbar() {
                         <Link
                           href="/dashboard?tab=wishlist"
                           onClick={() => setIsProfileOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                         >
-                          <Heart className="w-5 h-5" />
+                          <Heart className="w-5 h-5 text-[#64748B]" />
                           <span>Wishlist</span>
                         </Link>
 
@@ -244,9 +238,9 @@ export default function Navbar() {
                           <Link
                             href="/host"
                             onClick={() => setIsProfileOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                           >
-                            <Home className="w-5 h-5" />
+                            <Home className="w-5 h-5 text-[#64748B]" />
                             <span>Host Dashboard</span>
                           </Link>
                         )}
@@ -256,9 +250,9 @@ export default function Navbar() {
                           <Link
                             href="/admin"
                             onClick={() => setIsProfileOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                           >
-                            <Shield className="w-5 h-5" />
+                            <Shield className="w-5 h-5 text-[#64748B]" />
                             <span>Admin Panel</span>
                           </Link>
                         )}
@@ -268,9 +262,9 @@ export default function Navbar() {
                           <Link
                             href="/host/listings/new"
                             onClick={() => setIsProfileOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                           >
-                            <Plus className="w-5 h-5" />
+                            <Plus className="w-5 h-5 text-[#64748B]" />
                             <span>Add New Listing</span>
                           </Link>
                         )}
@@ -279,18 +273,18 @@ export default function Navbar() {
                         <Link
                           href="/dashboard?tab=settings"
                           onClick={() => setIsProfileOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
                         >
-                          <Settings className="w-5 h-5" />
+                          <Settings className="w-5 h-5 text-[#64748B]" />
                           <span>Settings</span>
                         </Link>
                       </div>
 
                       {/* Logout */}
-                      <div className="border-t border-gray-100 py-2">
+                      <div className="p-2">
                         <button
                           onClick={handleLogout}
-                          className="flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors w-full"
+                          className="flex items-center gap-3 px-4 py-2.5 text-red-500 rounded-xl w-full neu-button hover:bg-red-50 transition-colors"
                         >
                           <LogOut className="w-5 h-5" />
                           <span>Sign Out</span>
@@ -319,12 +313,12 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-gray-700" />
+              <X className="w-6 h-6 text-[#1E293B]" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-6 h-6 text-[#1E293B]" />
             )}
           </button>
         </div>
@@ -337,7 +331,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-100"
+            className="md:hidden bg-[#EEF2F] neu-dropdown mx-4 mb-4 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-4">
               {/* Navigation Links */}
@@ -347,10 +341,10 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block px-4 py-2 rounded-lg transition-colors ${
+                    className={`block px-4 py-2.5 rounded-xl transition-all duration-200 ${
                       isActive(link.href)
-                        ? 'bg-brand-primary/10 text-brand-primary'
-                        : 'text-gray-700 hover:bg-gray-50'
+                        ? 'neu-nav-item-active'
+                        : 'text-[#1E293B] neu-button'
                     }`}
                   >
                     {link.label}
@@ -359,16 +353,16 @@ export default function Navbar() {
               </div>
 
               {/* Auth Section */}
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4">
                 {isLoading ? (
-                  <div className="h-10 bg-gray-200 rounded-lg animate-pulse" />
+                  <div className="h-10 rounded-xl skeleton" />
                 ) : isAuthenticated ? (
                   <div className="space-y-2">
                     {/* User Info */}
                     <div className="px-4 py-2">
-                      <p className="font-medium text-gray-900">{profile?.full_name || 'User'}</p>
-                      <p className="text-sm text-gray-500">{user?.email}</p>
-                      <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeColor()}`}>
+                      <p className="font-medium text-[#1E293B]">{profile?.full_name || 'User'}</p>
+                      <p className="text-sm text-[#64748B]">{user?.email}</p>
+                      <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeStyle()}`}>
                         {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
                       </span>
                     </div>
@@ -376,18 +370,18 @@ export default function Navbar() {
                     <Link
                       href={getDashboardLink()}
                       onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
+                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
                     >
-                      <LayoutDashboard className="w-5 h-5" />
+                      <LayoutDashboard className="w-5 h-5 text-[#64748B]" />
                       <span>Dashboard</span>
                     </Link>
 
                     <Link
                       href="/dashboard?tab=bookings"
                       onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
+                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
                     >
-                      <Calendar className="w-5 h-5" />
+                      <Calendar className="w-5 h-5 text-[#64748B]" />
                       <span>My Bookings</span>
                     </Link>
 
@@ -395,9 +389,9 @@ export default function Navbar() {
                       <Link
                         href="/host"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
+                        className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
                       >
-                        <Building className="w-5 h-5" />
+                        <Building className="w-5 h-5 text-[#64748B]" />
                         <span>Host Dashboard</span>
                       </Link>
                     )}
@@ -406,16 +400,16 @@ export default function Navbar() {
                       <Link
                         href="/admin"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
+                        className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
                       >
-                        <Shield className="w-5 h-5" />
+                        <Shield className="w-5 h-5 text-[#64748B]" />
                         <span>Admin Panel</span>
                       </Link>
                     )}
 
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg w-full"
+                      className="flex items-center gap-3 px-4 py-2.5 text-red-500 neu-button rounded-xl w-full"
                     >
                       <LogOut className="w-5 h-5" />
                       <span>Sign Out</span>

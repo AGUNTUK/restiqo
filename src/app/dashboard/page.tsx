@@ -67,23 +67,23 @@ export default function DashboardPage() {
   const tabs = isHost ? hostTabs : guestTabs
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="neu-panel p-6 mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1E293B]">
                 Welcome back, {profile?.full_name || 'Guest'}!
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-[#64748B] mt-1">
                 Manage your bookings, wishlist, and account settings
               </p>
             </div>
             {isHost && (
               <Link
                 href="/host"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-xl hover:bg-brand-primary/90 transition-colors"
+                className="hidden sm:flex items-center gap-2 px-4 py-2.5 neu-button-primary rounded-xl"
               >
                 <Home className="w-5 h-5" />
                 Host Dashboard
@@ -93,10 +93,10 @@ export default function DashboardPage() {
 
           {/* Role Badge */}
           <div className="flex items-center gap-2 mt-4">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-              isAdmin ? 'bg-purple-100 text-purple-700' :
-              isHost ? 'bg-blue-100 text-blue-700' :
-              'bg-green-100 text-green-700'
+            <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${
+              isAdmin ? 'neu-badge bg-purple-500 text-white shadow-[3px_3px_6px_rgba(168,85,247,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]' :
+              isHost ? 'neu-badge bg-blue-500 text-white shadow-[3px_3px_6px_rgba(59,130,246,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]' :
+              'neu-badge-primary'
             }`}>
               {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
             </span>
@@ -115,16 +115,16 @@ export default function DashboardPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <div className="lg:w-64 flex-shrink-0">
-            <div className="clay p-4">
-              <nav className="space-y-1">
+            <div className="neu-panel p-4">
+              <nav className="space-y-2">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                       activeTab === tab.id
-                        ? 'bg-brand-primary text-white'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'neu-nav-item-active'
+                        : 'neu-nav-item'
                     }`}
                   >
                     <tab.icon className="w-5 h-5" />
@@ -134,12 +134,12 @@ export default function DashboardPage() {
               </nav>
 
               {/* Quick Actions */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h3 className="text-sm font-medium text-gray-500 mb-3">Quick Actions</h3>
+              <div className="mt-6 pt-6">
+                <h3 className="text-sm font-medium text-[#64748B] mb-3">Quick Actions</h3>
                 <div className="space-y-2">
                   <Link
                     href="/search"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-brand-primary transition-colors"
+                    className="neu-button flex items-center gap-2 px-4 py-2.5 text-sm text-[#64748B] rounded-xl w-full"
                   >
                     <Compass className="w-4 h-4" />
                     Explore Properties
@@ -147,7 +147,7 @@ export default function DashboardPage() {
                   {isAdmin && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-brand-primary transition-colors"
+                      className="neu-button flex items-center gap-2 px-4 py-2.5 text-sm text-[#64748B] rounded-xl w-full"
                     >
                       <Shield className="w-4 h-4" />
                       Admin Panel
@@ -165,6 +165,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
+              className="neu-panel p-6"
             >
               {activeTab === 'bookings' && <BookingsTab />}
               {activeTab === 'wishlist' && <WishlistTab />}
