@@ -273,30 +273,6 @@ const trendingTours = [
   },
 ]
 
-const categories = [
-  {
-    icon: Home,
-    title: 'Apartments',
-    description: 'Find your home away from home',
-    href: '/apartments',
-    color: 'bg-brand-primary',
-  },
-  {
-    icon: Building2,
-    title: 'Hotels',
-    description: 'Luxury stays with premium amenities',
-    href: '/hotels',
-    color: 'bg-brand-accent',
-  },
-  {
-    icon: Compass,
-    title: 'Tours',
-    description: 'Unforgettable experiences await',
-    href: '/tours',
-    color: 'bg-brand-secondary',
-  },
-]
-
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'apartments' | 'hotels' | 'tours'>('apartments')
   const [isGuestDropdownOpen, setIsGuestDropdownOpen] = useState(false)
@@ -781,32 +757,6 @@ export default function HomePage() {
                 </div>
               </div>
             </form>
-          </motion.div>
-
-          {/* Quick Categories */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-12 flex flex-wrap justify-center gap-4"
-          >
-            {categories.map((category) => (
-              <Link key={category.href} href={category.href}>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="clay flex items-center space-x-3 px-6 py-4 cursor-pointer hover:bg-white/90 transition-colors"
-                >
-                  <div className={`p-2 rounded-lg ${category.color}`}>
-                    <category.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{category.title}</p>
-                    <p className="text-sm text-gray-500">{category.description}</p>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
           </motion.div>
         </div>
       </section>

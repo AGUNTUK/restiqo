@@ -9,12 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.1.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.95.3",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.564.0",
+    "mapbox-gl": "^3.18.1",
     "next": "16.1.6",
+    "next-intl": "^4.8.3",
     "react": "19.2.3",
     "react-datepicker": "^9.1.0",
     "react-dom": "19.2.3",
