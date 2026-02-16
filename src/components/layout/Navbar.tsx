@@ -34,7 +34,6 @@ export default function Navbar() {
   
   const { user, profile, isAuthenticated, isLoading, isHost, isAdmin, signOut } = useAuth()
 
-  // Handle scroll behavior
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
@@ -68,7 +67,6 @@ export default function Navbar() {
 
   const isActive = (path: string) => pathname === path
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (isProfileOpen) {
@@ -82,14 +80,12 @@ export default function Navbar() {
     return () => document.removeEventListener('click', handleClickOutside)
   }, [isProfileOpen])
 
-  // Get role-based dashboard link
   const getDashboardLink = () => {
     if (isAdmin) return '/admin'
     if (isHost) return '/host'
     return '/dashboard'
   }
 
-  // Get role badge style
   const getRoleBadgeStyle = () => {
     if (isAdmin) return 'neu-badge bg-purple-500 text-white shadow-[3px_3px_6px_rgba(168,85,247,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]'
     if (isHost) return 'neu-badge bg-blue-500 text-white shadow-[3px_3px_6px_rgba(59,130,246,0.3),-3px_-3px_6px_rgba(255,255,255,0.8)]'
@@ -106,9 +102,9 @@ export default function Navbar() {
           : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
-          {/* Logo */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          
           <Link href="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -125,7 +121,6 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
             {navLinks.map((link) => (
               <Link
@@ -142,178 +137,9 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Auth Section */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Become a Host Button - only show for non-logged in users or guests */}
-            {!isLoading && !isHost && !isAdmin && (
-              <Link href={isAuthenticated ? '/host/register' : '/auth/login?redirect=/host/register'}>
-                <Button variant="outline" size="sm">
-                  Become a Host
-                </Button>
-              </Link>
-            )}
-            
-            {isLoading ? (
-              <div className="w-20 h-9 rounded-xl skeleton" />
-            ) : isAuthenticated ? (
-              <div className="relative profile-dropdown">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setIsProfileOpen(!isProfileOpen)
-                  }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl neu-button transition-all duration-200"
-                >
-                  {profile?.avatar_url ? (
-                    <img
-                      src={profile.avatar_url}
-                      alt={profile.full_name || 'User'}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full neu-icon-primary">
-                      <User className="w-4 h-4" />
-                    </div>
-                  )}
-                  <span className="text-sm font-medium text-[#1E293B] max-w-[100px] truncate">
-                    {profile?.full_name || 'User'}
-                  </span>
-                  <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {/* Profile Dropdown */}
-                <AnimatePresence>
-                  {isProfileOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-64 neu-dropdown overflow-hidden"
-                    >
-                      {/* User Info Header */}
-                      <div className="px-4 py-3 bg-[#EEF2F6]">
-                        <p className="font-medium text-[#1E293B] truncate">
-                          {profile?.full_name || 'User'}
-                        </p>
-                        <p className="text-sm text-[#64748B] truncate">{user?.email}</p>
-                        <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeStyle()}`}>
-                          {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
-                        </span>
-                      </div>
-
-                      {/* Menu Items */}
-                      <div className="py-2">
-                        {/* Dashboard */}
-                        <Link
-                          href={getDashboardLink()}
-                          onClick={() => setIsProfileOpen(false)}
-                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                        >
-                          <LayoutDashboard className="w-5 h-5 text-[#64748B]" />
-                          <span>Dashboard</span>
-                        </Link>
-
-                        {/* My Bookings */}
-                        <Link
-                          href="/dashboard?tab=bookings"
-                          onClick={() => setIsProfileOpen(false)}
-                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                        >
-                          <Calendar className="w-5 h-5 text-[#64748B]" />
-                          <span>My Bookings</span>
-                        </Link>
-
-                        {/* Wishlist */}
-                        <Link
-                          href="/dashboard?tab=wishlist"
-                          onClick={() => setIsProfileOpen(false)}
-                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                        >
-                          <Heart className="w-5 h-5 text-[#64748B]" />
-                          <span>Wishlist</span>
-                        </Link>
-
-                        {/* Host Dashboard - only for hosts */}
-                        {isHost && (
-                          <Link
-                            href="/host"
-                            onClick={() => setIsProfileOpen(false)}
-                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                          >
-                            <Home className="w-5 h-5 text-[#64748B]" />
-                            <span>Host Dashboard</span>
-                          </Link>
-                        )}
-
-                        {/* Admin Dashboard - only for admins */}
-                        {isAdmin && (
-                          <Link
-                            href="/admin"
-                            onClick={() => setIsProfileOpen(false)}
-                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                          >
-                            <Shield className="w-5 h-5 text-[#64748B]" />
-                            <span>Admin Panel</span>
-                          </Link>
-                        )}
-
-                        {/* Add Listing - only for hosts */}
-                        {isHost && (
-                          <Link
-                            href="/host/listings/new"
-                            onClick={() => setIsProfileOpen(false)}
-                            className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                          >
-                            <Plus className="w-5 h-5 text-[#64748B]" />
-                            <span>Add New Listing</span>
-                          </Link>
-                        )}
-
-                        {/* Settings */}
-                        <Link
-                          href="/dashboard?tab=settings"
-                          onClick={() => setIsProfileOpen(false)}
-                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
-                        >
-                          <Settings className="w-5 h-5 text-[#64748B]" />
-                          <span>Settings</span>
-                        </Link>
-                      </div>
-
-                      {/* Logout */}
-                      <div className="p-2">
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center gap-3 px-4 py-2.5 text-red-500 rounded-xl w-full neu-button hover:bg-red-50 transition-colors"
-                        >
-                          <LogOut className="w-5 h-5" />
-                          <span>Sign Out</span>
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link href="/auth/login">
-                  <Button variant="ghost" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/auth/signup">
-                  <Button variant="primary" size="sm">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200 flex-shrink-0 ml-2"
+            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200 flex-shrink-0"
           >
             {isMenuOpen ? (
               <X className="w-6 h-6 text-[#1E293B]" />
@@ -321,10 +147,10 @@ export default function Navbar() {
               <Menu className="w-6 h-6 text-[#1E293B]" />
             )}
           </button>
+
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -333,123 +159,7 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-[#EEF2F6] neu-dropdown mx-4 mb-4 overflow-hidden z-[60]"
           >
-            <div className="px-4 py-4 space-y-4">
-              {/* Navigation Links */}
-              <div className="space-y-2">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`block px-4 py-2.5 rounded-xl transition-all duration-200 ${
-                      isActive(link.href)
-                        ? 'neu-nav-item-active'
-                        : 'text-[#1E293B] neu-button'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Auth Section */}
-              <div className="pt-4">
-                {isLoading ? (
-                  <div className="h-10 rounded-xl skeleton" />
-                ) : isAuthenticated ? (
-                  <div className="space-y-2">
-                    {/* User Info */}
-                    <div className="px-4 py-2">
-                      <p className="font-medium text-[#1E293B]">{profile?.full_name || 'User'}</p>
-                      <p className="text-sm text-[#64748B]">{user?.email}</p>
-                      <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeStyle()}`}>
-                        {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
-                      </span>
-                    </div>
-
-                    <Link
-                      href={getDashboardLink()}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
-                    >
-                      <LayoutDashboard className="w-5 h-5 text-[#64748B]" />
-                      <span>Dashboard</span>
-                    </Link>
-
-                    <Link
-                      href="/dashboard?tab=bookings"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
-                    >
-                      <Calendar className="w-5 h-5 text-[#64748B]" />
-                      <span>My Bookings</span>
-                    </Link>
-
-                    {isHost && (
-                      <Link
-                        href="/host"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
-                      >
-                        <Building className="w-5 h-5 text-[#64748B]" />
-                        <span>Host Dashboard</span>
-                      </Link>
-                    )}
-
-                    {isAdmin && (
-                      <Link
-                        href="/admin"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
-                      >
-                        <Shield className="w-5 h-5 text-[#64748B]" />
-                        <span>Admin Panel</span>
-                      </Link>
-                    )}
-
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-3 px-4 py-2.5 text-red-500 neu-button rounded-xl w-full"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {!isHost && !isAdmin && (
-                      <Link
-                        href="/auth/login?redirect=/host/register"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block w-full"
-                      >
-                        <Button variant="outline" className="w-full">
-                          Become a Host
-                        </Button>
-                      </Link>
-                    )}
-                    <Link
-                      href="/auth/login"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block w-full"
-                    >
-                      <Button variant="ghost" className="w-full">
-                        Sign In
-                      </Button>
-                    </Link>
-                    <Link
-                      href="/auth/signup"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block w-full"
-                    >
-                      <Button variant="primary" className="w-full">
-                        Sign Up
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Mobile menu content */}
           </motion.div>
         )}
       </AnimatePresence>
