@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
-import { Navbar, Footer } from '@/components/layout'
+import { Navbar, Footer, BottomNav } from '@/components/layout'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/lib/auth'
 import { NextIntlClientProvider } from 'next-intl'
@@ -93,10 +93,11 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <Navbar />
-            <main className="min-h-screen">
+            <main className="min-h-screen pb-20 md:pb-0">
               {children}
             </main>
             <Footer />
+            <BottomNav />
             <Toaster
               position="top-right"
               toastOptions={{
