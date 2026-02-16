@@ -106,7 +106,7 @@ export default function Navbar() {
           : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="flex items-center justify-between h-20 gap-2">
           {/* Logo */}
           <Link href="/" className="flex items-center">
