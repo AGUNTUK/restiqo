@@ -3,160 +3,149 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { User, Mail, Phone, MapPin, Camera, Save, Loader2 } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import { createClient } from '@/lib/supabase/client'
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Camera,
+  Loader2,
+  Save,
+  Shield,
+  Calendar,
+} from 'lucide-react'
+import { useAuth } from '@/lib/auth'
 import toast from 'react-hot-toast'
-
-interface UserProfile {
-  id: string
-  email: string
-  full_name: string | null
-  avatar_url: string | null
-  phone: string | null
-  address: string | null
-  role: 'guest' | 'host' | 'admin'
-  created_at: string
-}
 
 export default function ProfilePage() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSaving, setIsSaving] = useState(false)
-  const [user, setUser] = useState<UserProfile | null>(null)
+  const { user, profile, isAuthenticated, isLoading: authLoading, updateProfile, isHost, isAdmin } = useAuth()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     full_name: '',
+    email: '',
     phone: '',
     address: '',
+    bio: '',
   })
 
   useEffect(() => {
-    loadProfile()
-  }, [])
-
-  const loadProfile = async () => {
-    const supabase = createClient()
-    
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session?.user) {
+    if (!authLoading && !isAuthenticated) {
       router.push('/auth/login?redirect=/profile')
-      return
     }
+  }, [authLoading, isAuthenticated, router])
 
-    const { data: profile, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', session.user.id)
-      .single()
-
-    if (error && error.code !== 'PGRST116') {
-      console.error('Error loading profile:', error)
-      toast.error('Failed to load profile')
-    }
-
+  useEffect(() => {
     if (profile) {
-      setUser(profile)
       setFormData({
         full_name: profile.full_name || '',
+        email: profile.email || '',
         phone: profile.phone || '',
         address: profile.address || '',
-      })
-    } else {
-      // Create profile from auth metadata
-      const newProfile = {
-        id: session.user.id,
-        email: session.user.email || '',
-        full_name: session.user.user_metadata?.full_name || '',
-        avatar_url: session.user.user_metadata?.avatar_url || null,
-        phone: null,
-        address: null,
-        role: session.user.user_metadata?.role || 'guest',
-        created_at: new Date().toISOString(),
-      }
-      setUser(newProfile)
-      setFormData({
-        full_name: newProfile.full_name || '',
-        phone: '',
-        address: '',
+        bio: profile.bio || '',
       })
     }
+  }, [profile])
 
-    setIsLoading(false)
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
 
-  const handleSave = async () => {
-    if (!user) return
-
-    setIsSaving(true)
-    const supabase = createClient()
-
-    const updateData = {
+    const { error } = await updateProfile({
       full_name: formData.full_name,
-      phone: formData.phone || null,
-      address: formData.address || null,
-    }
-
-    const { error } = await supabase
-      .from('users')
-      .upsert({
-        id: user.id,
-        email: user.email,
-        ...updateData,
-        role: user.role,
-      })
+      phone: formData.phone,
+      address: formData.address,
+      bio: formData.bio,
+    })
 
     if (error) {
-      console.error('Error saving profile:', error)
-      toast.error('Failed to save profile')
+      toast.error('Failed to update profile')
     } else {
-      setUser({ ...user, ...updateData })
       toast.success('Profile updated successfully')
     }
 
-    setIsSaving(false)
+    setLoading(false)
   }
 
-  if (isLoading) {
+  const getRoleBadgeColor = () => {
+    if (isAdmin) return 'bg-purple-100 text-purple-700'
+    if (isHost) return 'bg-blue-100 text-blue-700'
+    return 'bg-green-100 text-green-700'
+  }
+
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
-        <div className="clay p-8 text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
-          <p className="text-gray-600">Loading profile...</p>
-        </div>
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen pt-28 pb-16 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Profile Settings</h1>
+          <p className="text-gray-600 mt-1">Manage your account information</p>
+        </div>
+
+        {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="clay-lg p-6 sm:p-8"
+          className="clay p-6 mb-6"
         >
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="relative inline-block">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                {user?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
-              </div>
-              <button className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
-                <Camera className="w-4 h-4 text-gray-600" />
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            {/* Avatar */}
+            <div className="relative">
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  alt={profile.full_name || 'User'}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-brand-primary/10 flex items-center justify-center">
+                  <User className="w-12 h-12 text-brand-primary" />
+                </div>
+              )}
+              <button className="absolute bottom-0 right-0 p-2 bg-brand-primary text-white rounded-full hover:bg-brand-primary/90 transition-colors">
+                <Camera className="w-4 h-4" />
               </button>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mt-4">
-              {user?.full_name || 'Your Profile'}
-            </h1>
-            <p className="text-gray-500">{user?.email}</p>
-            <span className="inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full bg-brand-primary/10 text-brand-primary capitalize">
-              {user?.role}
-            </span>
-          </div>
 
-          {/* Form */}
+            {/* User Info */}
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-xl font-semibold text-gray-900">
+                {profile?.full_name || 'User'}
+              </h2>
+              <p className="text-gray-600">{profile?.email}</p>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRoleBadgeColor()}`}>
+                  {isAdmin ? 'Administrator' : isHost ? 'Host' : 'Guest'}
+                </span>
+                {profile?.created_at && (
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    Joined {new Date(profile.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Edit Form */}
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          onSubmit={handleSubmit}
+          className="clay p-6"
+        >
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">Personal Information</h3>
+          
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -169,7 +158,7 @@ export default function ProfilePage() {
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all"
-                  placeholder="Enter your full name"
+                  placeholder="Your full name"
                 />
               </div>
             </div>
@@ -182,7 +171,7 @@ export default function ProfilePage() {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
-                  value={user?.email || ''}
+                  value={formData.email}
                   disabled
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
                 />
@@ -201,7 +190,7 @@ export default function ProfilePage() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all"
-                  placeholder="Enter your phone number"
+                  placeholder="Your phone number"
                 />
               </div>
             </div>
@@ -211,45 +200,96 @@ export default function ProfilePage() {
                 Address
               </label>
               <div className="relative">
-                <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
-                <textarea
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all min-h-[100px]"
-                  placeholder="Enter your address"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all"
+                  placeholder="Your address"
                 />
               </div>
             </div>
 
-            <div className="pt-4">
-              <Button
-                variant="primary"
-                className="w-full"
-                onClick={handleSave}
-                isLoading={isSaving}
-                leftIcon={<Save className="w-5 h-5" />}
-              >
-                Save Changes
-              </Button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Bio
+              </label>
+              <textarea
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                rows={4}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all resize-none"
+                placeholder="Tell us about yourself..."
+              />
             </div>
           </div>
 
-          {/* Account Info */}
-          <div className="mt-8 pt-8 border-t border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Information</h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Account Type</span>
-                <span className="font-medium text-gray-900 capitalize">{user?.role}</span>
+          <div className="mt-8 flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex items-center gap-2 px-6 py-3 bg-brand-primary text-white rounded-xl hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-5 h-5" />
+                  Save Changes
+                </>
+              )}
+            </button>
+          </div>
+        </motion.form>
+
+        {/* Security Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="clay p-6 mt-6"
+        >
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Security</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div>
+                <p className="font-medium text-gray-900">Password</p>
+                <p className="text-sm text-gray-600">••••••••</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Member Since</span>
-                <span className="font-medium text-gray-900">
-                  {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
-                </span>
+              <button className="text-sm text-brand-primary hover:underline">
+                Change Password
+              </button>
+            </div>
+            <div className="flex items-center justify-between py-3">
+              <div>
+                <p className="font-medium text-gray-900">Two-Factor Authentication</p>
+                <p className="text-sm text-gray-600">Add an extra layer of security</p>
               </div>
+              <button className="text-sm text-brand-primary hover:underline">
+                Enable
+              </button>
             </div>
           </div>
+        </motion.div>
+
+        {/* Danger Zone */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="clay p-6 mt-6 border-red-200"
+        >
+          <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Once you delete your account, there is no going back. Please be certain.
+          </p>
+          <button className="px-4 py-2 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+            Delete Account
+          </button>
         </motion.div>
       </div>
     </div>

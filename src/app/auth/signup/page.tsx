@@ -4,14 +4,14 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Mail, Lock, Eye, EyeOff, User, ArrowRight } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import { createClient } from '@/lib/supabase/client'
+import { Mail, Lock, Eye, EyeOff, User, ArrowRight, Loader2 } from 'lucide-react'
+import { useAuth } from '@/lib/auth'
 import toast from 'react-hot-toast'
 
 export default function SignupPage() {
   const router = useRouter()
+  const { signUp, signInWithGoogle, isAuthenticated, isLoading: authLoading } = useAuth()
+  
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -26,6 +26,12 @@ export default function SignupPage() {
     password: '',
     confirmPassword: '',
   })
+
+  // Redirect if already logged in
+  if (!authLoading && isAuthenticated) {
+    router.push('/dashboard')
+    return null
+  }
 
   const validateForm = () => {
     const newErrors = { fullName: '', email: '', password: '', confirmPassword: '' }
@@ -75,52 +81,17 @@ export default function SignupPage() {
     setIsLoading(true)
 
     try {
-      const supabase = createClient()
-
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-            role: 'guest', // All signups are guests by default
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
+      const { error } = await signUp(formData.email, formData.password, formData.fullName)
 
       if (error) {
-        toast.error(error.message)
+        toast.error(error)
         setIsLoading(false)
         return
       }
 
-      if (data.user) {
-        // Check if user needs email confirmation
-        if (data.user.identities && data.user.identities.length === 0) {
-          toast.error('An account with this email already exists. Please log in.')
-          setIsLoading(false)
-          return
-        }
-
-        // Create user profile in users table
-        try {
-          await supabase.from('users').insert({
-            id: data.user.id,
-            email: formData.email,
-            full_name: formData.fullName,
-            role: 'guest',
-          })
-        } catch (profileError) {
-          console.error('Error creating profile:', profileError)
-          // Don't show error to user as the auth account was created
-        }
-
-        toast.success('Account created! Please check your email to verify.')
-        router.push('/auth/verify-email')
-      }
+      toast.success('Account created! Please check your email to verify.')
+      router.push('/auth/verify-email')
     } catch (error) {
-      console.error('Signup error:', error)
       toast.error('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -128,21 +99,23 @@ export default function SignupPage() {
   }
 
   const handleGoogleSignIn = async () => {
-    try {
-      const supabase = createClient()
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
-
-      if (error) {
-        toast.error(error.message)
-      }
-    } catch (error) {
-      toast.error('An unexpected error occurred')
+    const { error } = await signInWithGoogle()
+    if (error) {
+      toast.error(error)
     }
+  }
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12 pt-28 sm:pt-32">
+        <div className="w-full max-w-md">
+          <div className="clay-lg p-6 sm:p-8 text-center">
+            <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -166,60 +139,100 @@ export default function SignupPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            <Input
-              label="Full Name"
-              type="text"
-              placeholder="Enter your full name"
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              error={errors.fullName}
-              leftIcon={<User className="w-5 h-5" />}
-            />
-
-            <Input
-              label="Email"
-              type="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              error={errors.email}
-              leftIcon={<Mail className="w-5 h-5" />}
-            />
-
-            <div className="relative">
-              <Input
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                error={errors.password}
-                leftIcon={<Lock className="w-5 h-5" />}
-                rightIcon={
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="focus:outline-none"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
-                  </button>
-                }
-              />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className={`w-full pl-12 pr-4 py-3 rounded-xl border ${
+                    errors.fullName ? 'border-red-500' : 'border-gray-200'
+                  } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                />
+              </div>
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
             </div>
 
-            <Input
-              label="Confirm Password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Confirm your password"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              error={errors.confirmPassword}
-              leftIcon={<Lock className="w-5 h-5" />}
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={`w-full pl-12 pr-4 py-3 rounded-xl border ${
+                    errors.email ? 'border-red-500' : 'border-gray-200'
+                  } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className={`w-full pl-12 pr-12 py-3 rounded-xl border ${
+                    errors.password ? 'border-red-500' : 'border-gray-200'
+                  } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5 text-gray-400" />
+                  ) : (
+                    <Eye className="w-5 h-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  className={`w-full pl-12 pr-4 py-3 rounded-xl border ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-200'
+                  } focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all`}
+                />
+              </div>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+              )}
+            </div>
 
             <div className="flex items-start">
               <input
@@ -239,15 +252,23 @@ export default function SignupPage() {
               </span>
             </div>
 
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              className="w-full"
-              isLoading={isLoading}
-              rightIcon={<ArrowRight className="w-5 h-5" />}
+              disabled={isLoading}
+              className="w-full py-3 px-6 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Create Account
-            </Button>
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Create Account
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
           </form>
 
           {/* Divider */}
@@ -288,19 +309,6 @@ export default function SignupPage() {
               </svg>
               <span className="font-medium text-gray-700">Continue with Google</span>
             </button>
-          </div>
-
-          {/* Host Registration Link */}
-          <div className="mt-6 p-4 bg-brand-primary/5 rounded-xl text-center">
-            <p className="text-sm text-gray-600 mb-2">
-              Want to list your properties?
-            </p>
-            <Link
-              href="/host/register"
-              className="text-brand-primary font-medium hover:underline"
-            >
-              Register as a Host →
-            </Link>
           </div>
 
           {/* Login Link */}

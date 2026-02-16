@@ -1,17 +1,18 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { useAuth } from '@/lib/auth'
 import toast from 'react-hot-toast'
 
 function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || '/dashboard'
+  const { signIn, signInWithGoogle, isAuthenticated, isLoading: authLoading } = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -24,17 +25,11 @@ function LoginContent() {
     password: '',
   })
 
-  // Check if already logged in
-  useEffect(() => {
-    const checkSession = async () => {
-      const supabase = createClient()
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        router.push(redirectTo)
-      }
-    }
-    checkSession()
-  }, [router, redirectTo])
+  // Redirect if already logged in
+  if (!authLoading && isAuthenticated) {
+    router.push(redirectTo)
+    return null
+  }
 
   const validateForm = () => {
     const newErrors = { email: '', password: '' }
@@ -68,55 +63,38 @@ function LoginContent() {
     setIsLoading(true)
 
     try {
-      const supabase = createClient()
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      })
+      const { error } = await signIn(formData.email, formData.password)
 
       if (error) {
-        console.error('Login error:', error)
-        toast.error(error.message)
+        toast.error(error)
         setIsLoading(false)
         return
       }
 
-      if (data.session) {
-        toast.success('Welcome back!')
-        // Use window.location for a full page reload to ensure auth state is updated
-        window.location.href = redirectTo
-      } else if (data.user) {
-        // User exists but no session - might need email confirmation
-        toast.error('Please check your email to confirm your account before logging in.')
-        setIsLoading(false)
-      } else {
-        toast.error('Login failed. Please check your credentials.')
-        setIsLoading(false)
-      }
+      toast.success('Welcome back!')
+      router.push(redirectTo)
     } catch (error) {
-      console.error('Login exception:', error)
       toast.error('An unexpected error occurred. Please try again.')
       setIsLoading(false)
     }
   }
 
   const handleGoogleSignIn = async () => {
-    try {
-      const supabase = createClient()
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback?redirect=${redirectTo}`,
-        },
-      })
-
-      if (error) {
-        toast.error(error.message)
-      }
-    } catch (error) {
-      toast.error('An unexpected error occurred')
+    const { error } = await signInWithGoogle()
+    if (error) {
+      toast.error(error)
     }
+  }
+
+  if (authLoading) {
+    return (
+      <div className="w-full max-w-md">
+        <div className="clay-lg p-6 sm:p-8 text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

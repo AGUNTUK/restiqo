@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -16,18 +16,12 @@ import {
   Plus,
   LayoutDashboard,
   ChevronDown,
+  Home,
+  Shield,
+  Building,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
-import { createClient } from '@/lib/supabase/client'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
-
-interface UserProfile {
-  id: string
-  email: string
-  full_name: string | null
-  avatar_url: string | null
-  role: 'guest' | 'host' | 'admin'
-}
+import { useAuth } from '@/lib/auth'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -35,10 +29,10 @@ export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
-  const [user, setUser] = useState<UserProfile | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const pathname = usePathname()
   const router = useRouter()
+  
+  const { user, profile, isAuthenticated, isLoading, isHost, isAdmin, signOut } = useAuth()
 
   // Handle scroll behavior
   useEffect(() => {
@@ -59,105 +53,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
-  // Fetch user profile data
-  const fetchUserProfile = useCallback(async (userId: string, email: string) => {
-    const supabase = createClient()
-    
-    try {
-      const { data: profile, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single()
-      
-      if (profile && !error) {
-        return profile as UserProfile
-      }
-      
-      // Return default profile from auth metadata
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      return {
-        id: userId,
-        email: email,
-        full_name: authUser?.user_metadata?.full_name || null,
-        avatar_url: authUser?.user_metadata?.avatar_url || null,
-        role: authUser?.user_metadata?.role || 'guest',
-      } as UserProfile
-    } catch (error) {
-      console.error('Error fetching profile:', error)
-      return null
-    }
-  }, [])
-
-  // Check for user session on mount and handle auth changes
-  useEffect(() => {
-    const supabase = createClient()
-    let mounted = true
-
-    // Get initial session
-    const getInitialSession = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession()
-        
-        if (error) {
-          console.error('Session error:', error)
-          if (mounted) {
-            setUser(null)
-            setIsLoading(false)
-          }
-          return
-        }
-        
-        if (session?.user && mounted) {
-          const profile = await fetchUserProfile(session.user.id, session.user.email || '')
-          if (mounted) {
-            setUser(profile)
-          }
-        }
-      } catch (error) {
-        console.error('Error getting session:', error)
-      } finally {
-        if (mounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-    
-    getInitialSession()
-    
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
-      console.log('Auth state changed:', event, session?.user?.email)
-      
-      if (!mounted) return
-      
-      if (event === 'SIGNED_OUT' || !session) {
-        setUser(null)
-        return
-      }
-      
-      if (session?.user) {
-        const profile = await fetchUserProfile(session.user.id, session.user.email || '')
-        if (mounted) {
-          setUser(profile)
-        }
-      }
-    })
-    
-    return () => {
-      mounted = false
-      subscription.unsubscribe()
-    }
-  }, [fetchUserProfile])
-
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    setUser(null)
+    await signOut()
     setIsProfileOpen(false)
     setIsMenuOpen(false)
-    router.push('/')
-    router.refresh()
   }
 
   const navLinks = [
@@ -182,6 +81,20 @@ export default function Navbar() {
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
   }, [isProfileOpen])
+
+  // Get role-based dashboard link
+  const getDashboardLink = () => {
+    if (isAdmin) return '/admin'
+    if (isHost) return '/host'
+    return '/dashboard'
+  }
+
+  // Get role badge color
+  const getRoleBadgeColor = () => {
+    if (isAdmin) return 'bg-purple-100 text-purple-700'
+    if (isHost) return 'bg-blue-100 text-blue-700'
+    return 'bg-green-100 text-green-700'
+  }
 
   return (
     <nav
@@ -238,8 +151,8 @@ export default function Navbar() {
           {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Become a Host Button - only show for non-logged in users or guests */}
-            {(!user || user.role === 'guest') && (
-              <Link href={user ? '/host/register' : '/auth/login?redirect=/host/register'}>
+            {!isLoading && !isHost && !isAdmin && (
+              <Link href={isAuthenticated ? '/host/register' : '/auth/login?redirect=/host/register'}>
                 <Button variant="outline" size="sm">
                   Become a Host
                 </Button>
@@ -248,150 +161,158 @@ export default function Navbar() {
             
             {isLoading ? (
               <div className="w-20 h-9 bg-gray-200 rounded-lg animate-pulse" />
-            ) : user ? (
+            ) : isAuthenticated ? (
               <div className="relative profile-dropdown">
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     setIsProfileOpen(!isProfileOpen)
                   }}
-                  className="flex items-center space-x-2 p-1.5 rounded-full hover:bg-gray-100/80 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors"
                 >
-                  {user.avatar_url ? (
-                    <Image
-                      src={user.avatar_url}
-                      alt={user.full_name || 'User'}
-                      width={36}
-                      height={36}
-                      className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-md"
+                  {profile?.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt={profile.full_name || 'User'}
+                      className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                      {user.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+                    <div className="w-8 h-8 rounded-full bg-brand-primary/10 flex items-center justify-center">
+                      <User className="w-4 h-4 text-brand-primary" />
                     </div>
                   )}
-                  <ChevronDown
-                    className={`w-4 h-4 text-gray-600 transition-transform ${
-                      isProfileOpen ? 'rotate-180' : ''
-                    }`}
-                  />
+                  <span className="text-sm font-medium text-gray-700 max-w-[100px] truncate">
+                    {profile?.full_name || 'User'}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
                 </button>
 
+                {/* Profile Dropdown */}
                 <AnimatePresence>
                   {isProfileOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-56 clay-lg py-2 z-50"
+                      className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
                     >
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="font-medium text-gray-900">
-                          {user.full_name || 'User'}
+                      {/* User Info Header */}
+                      <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                        <p className="font-medium text-gray-900 truncate">
+                          {profile?.full_name || 'User'}
                         </p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full bg-brand-primary/10 text-brand-primary capitalize">
-                          {user.role}
+                        <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+                        <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeColor()}`}>
+                          {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
                         </span>
                       </div>
 
-                      <Link
-                        href="/dashboard"
-                        className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <LayoutDashboard className="w-4 h-4" />
-                        <span>Dashboard</span>
-                      </Link>
+                      {/* Menu Items */}
+                      <div className="py-2">
+                        {/* Dashboard */}
+                        <Link
+                          href={getDashboardLink()}
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <LayoutDashboard className="w-5 h-5" />
+                          <span>Dashboard</span>
+                        </Link>
 
-                      <Link
-                        href="/bookings"
-                        className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <Calendar className="w-4 h-4" />
-                        <span>My Bookings</span>
-                      </Link>
+                        {/* My Bookings */}
+                        <Link
+                          href="/dashboard?tab=bookings"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Calendar className="w-5 h-5" />
+                          <span>My Bookings</span>
+                        </Link>
 
-                      <Link
-                        href="/wishlist"
-                        className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <Heart className="w-4 h-4" />
-                        <span>Wishlist</span>
-                      </Link>
+                        {/* Wishlist */}
+                        <Link
+                          href="/dashboard?tab=wishlist"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Heart className="w-5 h-5" />
+                          <span>Wishlist</span>
+                        </Link>
 
-                      <Link
-                        href="/profile"
-                        className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <User className="w-4 h-4" />
-                        <span>Profile Settings</span>
-                      </Link>
-
-                      {(user.role === 'host' || user.role === 'admin') && (
-                        <>
-                          <div className="border-t border-gray-100 my-1" />
-                          <Link
-                            href="/host/properties/new"
-                            className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                            onClick={() => setIsProfileOpen(false)}
-                          >
-                            <Plus className="w-4 h-4" />
-                            <span>Add Property</span>
-                          </Link>
+                        {/* Host Dashboard - only for hosts */}
+                        {isHost && (
                           <Link
                             href="/host"
-                            className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                             onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
                           >
-                            <Settings className="w-4 h-4" />
+                            <Home className="w-5 h-5" />
                             <span>Host Dashboard</span>
                           </Link>
-                        </>
-                      )}
+                        )}
 
-                      {user.role === 'admin' && (
-                        <>
-                          <div className="border-t border-gray-100 my-1" />
+                        {/* Admin Dashboard - only for admins */}
+                        {isAdmin && (
                           <Link
                             href="/admin"
-                            className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                             onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
                           >
-                            <Settings className="w-4 h-4" />
+                            <Shield className="w-5 h-5" />
                             <span>Admin Panel</span>
                           </Link>
-                        </>
-                      )}
+                        )}
 
-                      <div className="border-t border-gray-100 my-1" />
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 w-full"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span>Logout</span>
-                      </button>
+                        {/* Add Listing - only for hosts */}
+                        {isHost && (
+                          <Link
+                            href="/host/listings/new"
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <Plus className="w-5 h-5" />
+                            <span>Add New Listing</span>
+                          </Link>
+                        )}
+
+                        {/* Settings */}
+                        <Link
+                          href="/dashboard?tab=settings"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Settings className="w-5 h-5" />
+                          <span>Settings</span>
+                        </Link>
+                      </div>
+
+                      {/* Logout */}
+                      <div className="border-t border-gray-100 py-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors w-full"
+                        >
+                          <LogOut className="w-5 h-5" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             ) : (
-              <>
+              <div className="flex items-center gap-3">
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm" className="border-2 border-black">
-                    Log in
+                  <Button variant="ghost" size="sm">
+                    Sign In
                   </Button>
                 </Link>
                 <Link href="/auth/signup">
                   <Button variant="primary" size="sm">
-                    Sign up
+                    Sign Up
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
@@ -416,121 +337,122 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/70 backdrop-blur-xl border-t border-white/20"
+            className="md:hidden bg-white border-t border-gray-100"
           >
-            <div className="px-4 py-6 space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`block py-2 text-base font-medium ${
-                    isActive(link.href)
-                      ? 'text-brand-primary'
-                      : 'text-gray-700'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <div className="px-4 py-4 space-y-4">
+              {/* Navigation Links */}
+              <div className="space-y-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`block px-4 py-2 rounded-lg transition-colors ${
+                      isActive(link.href)
+                        ? 'bg-brand-primary/10 text-brand-primary'
+                        : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
 
-              <div className="pt-4 border-t border-gray-100 space-y-3">
+              {/* Auth Section */}
+              <div className="pt-4 border-t border-gray-100">
                 {isLoading ? (
                   <div className="h-10 bg-gray-200 rounded-lg animate-pulse" />
-                ) : user ? (
-                  <>
-                    <div className="flex items-center space-x-3 py-2">
-                      {user.avatar_url ? (
-                        <Image
-                          src={user.avatar_url}
-                          alt={user.full_name || 'User'}
-                          width={40}
-                          height={40}
-                          className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white font-semibold shadow-md">
-                          {user.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {user.full_name || 'User'}
-                        </p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
+                ) : isAuthenticated ? (
+                  <div className="space-y-2">
+                    {/* User Info */}
+                    <div className="px-4 py-2">
+                      <p className="font-medium text-gray-900">{profile?.full_name || 'User'}</p>
+                      <p className="text-sm text-gray-500">{user?.email}</p>
+                      <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${getRoleBadgeColor()}`}>
+                        {isAdmin ? 'Admin' : isHost ? 'Host' : 'Guest'}
+                      </span>
                     </div>
+
                     <Link
-                      href="/dashboard"
-                      className="block py-2 text-gray-700"
+                      href={getDashboardLink()}
                       onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
                     >
-                      Dashboard
+                      <LayoutDashboard className="w-5 h-5" />
+                      <span>Dashboard</span>
                     </Link>
+
                     <Link
-                      href="/bookings"
-                      className="block py-2 text-gray-700"
+                      href="/dashboard?tab=bookings"
                       onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
                     >
-                      My Bookings
+                      <Calendar className="w-5 h-5" />
+                      <span>My Bookings</span>
                     </Link>
-                    <Link
-                      href="/wishlist"
-                      className="block py-2 text-gray-700"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Wishlist
-                    </Link>
-                    <Link
-                      href="/profile"
-                      className="block py-2 text-gray-700"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Profile Settings
-                    </Link>
-                    {(user.role === 'host' || user.role === 'admin') && (
+
+                    {isHost && (
                       <Link
                         href="/host"
-                        className="block py-2 text-gray-700"
                         onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
                       >
-                        Host Dashboard
+                        <Building className="w-5 h-5" />
+                        <span>Host Dashboard</span>
                       </Link>
                     )}
+
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 rounded-lg"
+                      >
+                        <Shield className="w-5 h-5" />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
+
                     <button
                       onClick={handleLogout}
-                      className="block py-2 text-red-600 w-full text-left"
+                      className="flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg w-full"
                     >
-                      Logout
+                      <LogOut className="w-5 h-5" />
+                      <span>Sign Out</span>
                     </button>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <Link
-                      href="/auth/login?redirect=/host/register"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <Button variant="outline" className="w-full mb-2">
-                        Become a Host
-                      </Button>
-                    </Link>
+                  <div className="space-y-2">
+                    {!isHost && !isAdmin && (
+                      <Link
+                        href="/auth/login?redirect=/host/register"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block w-full"
+                      >
+                        <Button variant="outline" className="w-full">
+                          Become a Host
+                        </Button>
+                      </Link>
+                    )}
                     <Link
                       href="/auth/login"
                       onClick={() => setIsMenuOpen(false)}
+                      className="block w-full"
                     >
-                      <Button variant="ghost" className="w-full border-2 border-black">
-                        Log in
+                      <Button variant="ghost" className="w-full">
+                        Sign In
                       </Button>
                     </Link>
                     <Link
                       href="/auth/signup"
                       onClick={() => setIsMenuOpen(false)}
+                      className="block w-full"
                     >
                       <Button variant="primary" className="w-full">
-                        Sign up
+                        Sign Up
                       </Button>
                     </Link>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

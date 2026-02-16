@@ -1,54 +1,64 @@
 'use client'
 
-import { Suspense, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { Loader2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-function AuthCallbackContent() {
+export default function AuthCallbackPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
 
   useEffect(() => {
     const handleCallback = async () => {
       const supabase = createClient()
+      
+      try {
+        // Get the auth code from URL
+        const code = searchParams.get('code')
+        const redirect = searchParams.get('redirect') || '/dashboard'
 
-      const { data: { session }, error } = await supabase.auth.getSession()
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code)
+          
+          if (error) {
+            console.error('Auth callback error:', error)
+            setStatus('error')
+            toast.error('Authentication failed. Please try again.')
+            setTimeout(() => {
+              router.push('/auth/login')
+            }, 2000)
+            return
+          }
 
-      if (error) {
-        toast.error('Authentication failed')
-        router.push('/auth/login')
-        return
-      }
-
-      if (session) {
-        // Check if user profile exists
-        const { data: existingUser } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
-
-        // Create profile if it doesn't exist
-        if (!existingUser) {
-          const { error: profileError } = await supabase.from('users').insert({
-            id: session.user.id,
-            email: session.user.email!,
-            full_name: session.user.user_metadata.full_name || session.user.user_metadata.name || null,
-            avatar_url: session.user.user_metadata.avatar_url || null,
-            role: session.user.user_metadata.role || 'guest',
-          })
-
-          if (profileError) {
-            console.error('Error creating profile:', profileError)
+          setStatus('success')
+          toast.success('Successfully signed in!')
+          
+          // Small delay to ensure session is set
+          setTimeout(() => {
+            router.push(redirect)
+          }, 1000)
+        } else {
+          // No code present, check if already authenticated
+          const { data: { session } } = await supabase.auth.getSession()
+          
+          if (session) {
+            setStatus('success')
+            router.push(redirect)
+          } else {
+            setStatus('error')
+            router.push('/auth/login')
           }
         }
-
-        toast.success('Successfully signed in!')
-        
-        const redirectTo = searchParams.get('redirect') || '/dashboard'
-        router.push(redirectTo)
-        router.refresh()
+      } catch (error) {
+        console.error('Callback error:', error)
+        setStatus('error')
+        toast.error('An unexpected error occurred')
+        setTimeout(() => {
+          router.push('/auth/login')
+        }, 2000)
       }
     }
 
@@ -56,26 +66,52 @@ function AuthCallbackContent() {
   }, [router, searchParams])
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-20">
-      <div className="clay p-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4" />
-        <p className="text-gray-600">Completing authentication...</p>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="clay-lg p-8 text-center max-w-md w-full">
+        {status === 'loading' && (
+          <>
+            <Loader2 className="w-12 h-12 animate-spin text-brand-primary mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Completing sign in...
+            </h2>
+            <p className="text-gray-600">
+              Please wait while we verify your authentication.
+            </p>
+          </>
+        )}
+        
+        {status === 'success' && (
+          <>
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Success!
+            </h2>
+            <p className="text-gray-600">
+              Redirecting you to your dashboard...
+            </p>
+          </>
+        )}
+        
+        {status === 'error' && (
+          <>
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Authentication Failed
+            </h2>
+            <p className="text-gray-600">
+              Redirecting you to login...
+            </p>
+          </>
+        )}
       </div>
     </div>
-  )
-}
-
-export default function AuthCallbackPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center pt-20">
-        <div className="clay p-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    }>
-      <AuthCallbackContent />
-    </Suspense>
   )
 }

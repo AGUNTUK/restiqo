@@ -1,6 +1,12 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Route configuration
+const PUBLIC_PATHS = ['/', '/auth', '/apartments', '/hotels', '/tours', '/search', '/property']
+const GUEST_PATHS = ['/dashboard', '/bookings', '/wishlist', '/profile']
+const HOST_PATHS = ['/host']
+const ADMIN_PATHS = ['/admin']
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -48,52 +54,67 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protected routes
-  const protectedPaths = ['/dashboard', '/bookings', '/wishlist', '/host', '/admin']
-  const isProtectedPath = protectedPaths.some(path => 
-    request.nextUrl.pathname.startsWith(path)
+  const pathname = request.nextUrl.pathname
+
+  // Check if path is public
+  const isPublicPath = PUBLIC_PATHS.some(path => 
+    pathname === path || pathname.startsWith(`${path}/`)
   )
 
-  if (isProtectedPath && !user) {
-    // Redirect to login page
+  // Allow public paths
+  if (isPublicPath && !pathname.startsWith('/dashboard') && 
+      !pathname.startsWith('/bookings') && !pathname.startsWith('/wishlist') &&
+      !pathname.startsWith('/profile') && !pathname.startsWith('/host') &&
+      !pathname.startsWith('/admin')) {
+    return supabaseResponse
+  }
+
+  // Redirect unauthenticated users to login
+  if (!user) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
-    url.searchParams.set('redirect', request.nextUrl.pathname)
+    url.searchParams.set('redirect', pathname)
     return NextResponse.redirect(url)
   }
 
-  // Admin-only routes
-  if (request.nextUrl.pathname.startsWith('/admin') && user) {
-    // Check if user has admin role
-    const { data: userData } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+  // Get user role
+  const { data: userData } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .single()
 
-    if (!userData || userData.role !== 'admin') {
-      // Redirect to home page if not admin
+  const userRole = userData?.role || 'guest'
+
+  // Admin-only routes
+  if (pathname.startsWith('/admin')) {
+    if (userRole !== 'admin') {
       const url = request.nextUrl.clone()
       url.pathname = '/'
       return NextResponse.redirect(url)
     }
   }
 
-  // Host-only routes
-  if (request.nextUrl.pathname.startsWith('/host') && user) {
-    // Check if user has host role
-    const { data: userData } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    if (!userData || (userData.role !== 'host' && userData.role !== 'admin')) {
-      // Redirect to home page if not host
+  // Host-only routes (admins can also access)
+  if (pathname.startsWith('/host')) {
+    // Allow access to host registration page for authenticated users
+    if (pathname === '/host/register' || pathname === '/host/pending') {
+      return supabaseResponse
+    }
+    
+    if (userRole !== 'host' && userRole !== 'admin') {
+      // Redirect guests to become a host page
       const url = request.nextUrl.clone()
-      url.pathname = '/'
+      url.pathname = '/host/register'
       return NextResponse.redirect(url)
     }
+  }
+
+  // Redirect authenticated users away from auth pages
+  if (pathname.startsWith('/auth/login') || pathname.startsWith('/auth/signup')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
   return supabaseResponse
@@ -107,7 +128,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
+     * - api routes
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
   ],
 }

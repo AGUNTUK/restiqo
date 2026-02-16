@@ -1,494 +1,267 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Building2, 
-  FileText, 
-  Check, 
-  ArrowRight,
+import {
+  Loader2,
   Home,
-  Hotel,
-  Compass,
-  Shield
+  Check,
+  Star,
+  Shield,
+  DollarSign,
+  Users,
+  Calendar,
+  ArrowRight,
 } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { useAuth } from '@/lib/auth'
 import toast from 'react-hot-toast'
 
 const benefits = [
   {
-    icon: Home,
-    title: 'List Your Properties',
-    description: 'Showcase your apartments, hotels, or tours to thousands of travelers'
+    icon: DollarSign,
+    title: 'Earn Money',
+    description: 'Set your own prices and earn money from your properties',
+  },
+  {
+    icon: Calendar,
+    title: 'Flexible Schedule',
+    description: 'Control your availability and manage bookings on your terms',
   },
   {
     icon: Shield,
     title: 'Secure Payments',
-    description: 'Receive payments securely with our trusted payment system'
+    description: 'Protected transactions with automatic payout processing',
   },
   {
-    icon: Building2,
-    title: 'Manage Everything',
-    description: 'Easy-to-use dashboard to manage bookings, guests, and earnings'
+    icon: Users,
+    title: 'Reach Guests',
+    description: 'Connect with travelers from around the world',
+  },
+]
+
+const steps = [
+  {
+    step: 1,
+    title: 'Create Your Listing',
+    description: 'Add photos, details, and set your price',
   },
   {
-    icon: Compass,
-    title: 'Reach More Guests',
-    description: 'Get visibility across Bangladesh and attract more customers'
-  }
+    step: 2,
+    title: 'Get Approved',
+    description: 'Our team reviews your listing within 24 hours',
+  },
+  {
+    step: 3,
+    title: 'Start Hosting',
+    description: 'Accept bookings and start earning',
+  },
 ]
 
-const propertyTypes = [
-  { id: 'apartment', label: 'Apartment', icon: Home },
-  { id: 'hotel', label: 'Hotel', icon: Hotel },
-  { id: 'tour', label: 'Tour/Experience', icon: Compass },
-]
-
-export default function HostRegisterPage() {
+export default function BecomeHostPage() {
   const router = useRouter()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    // Personal Info
-    fullName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    // Business Info
-    businessName: '',
-    businessType: '',
-    propertyTypes: [] as string[],
-    address: '',
-    city: '',
-    // Documents
-    nidNumber: '',
-    tradeLicense: '',
-    // Agreement
-    agreeTerms: false,
-  })
+  const { user, isAuthenticated, isLoading: authLoading, isHost, becomeHost } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [agreed, setAgreed] = useState(false)
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/auth/login?redirect=/host/register')
+    } else if (!authLoading && isHost) {
+      router.push('/host')
+    }
+  }, [authLoading, isAuthenticated, isHost, router])
 
-  const validateStep = (step: number) => {
-    const newErrors: Record<string, string> = {}
+  const handleBecomeHost = async () => {
+    if (!agreed) {
+      toast.error('Please agree to the host terms')
+      return
+    }
+
+    setLoading(true)
     
-    if (step === 1) {
-      if (!formData.fullName) newErrors.fullName = 'Full name is required'
-      if (!formData.email) newErrors.email = 'Email is required'
-      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email format'
-      if (!formData.phone) newErrors.phone = 'Phone number is required'
-      if (!formData.password) newErrors.password = 'Password is required'
-      else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters'
-      if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match'
+    const { error } = await becomeHost()
+    
+    if (error) {
+      toast.error(error)
+    } else {
+      toast.success('Congratulations! You are now a host!')
+      router.push('/host')
     }
     
-    if (step === 2) {
-      if (!formData.businessName) newErrors.businessName = 'Business name is required'
-      if (!formData.businessType) newErrors.businessType = 'Business type is required'
-      if (formData.propertyTypes.length === 0) newErrors.propertyTypes = 'Select at least one property type'
-      if (!formData.city) newErrors.city = 'City is required'
-    }
-    
-    if (step === 3) {
-      if (!formData.nidNumber) newErrors.nidNumber = 'NID number is required'
-      if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms'
-    }
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    setLoading(false)
   }
 
-  const handleNext = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
-  const handleBack = () => {
-    setCurrentStep(currentStep - 1)
-  }
-
-  const handlePropertyTypeToggle = (typeId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      propertyTypes: prev.propertyTypes.includes(typeId)
-        ? prev.propertyTypes.filter(t => t !== typeId)
-        : [...prev.propertyTypes, typeId]
-    }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateStep(3)) return
-    
-    setIsLoading(true)
-    
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      toast.success('Registration submitted! We will review your application.')
-      router.push('/host/pending')
-    } catch (error) {
-      toast.error('Registration failed. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
+  if (authLoading || !isAuthenticated || isHost) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-12 bg-gradient-to-br from-brand-background-light to-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Become a Host on Restiqo
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Join our community of hosts and start earning by sharing your properties and experiences with travelers
-            </p>
-          </motion.div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Benefits Section */}
-          <div className="lg:col-span-1 order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="clay-lg p-6 sticky top-24"
-            >
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Why Host with Us?</h2>
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="w-5 h-5 text-brand-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-gray-900">{benefit.title}</h3>
-                      <p className="text-sm text-gray-600">{benefit.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  Already have an account?{' '}
-                  <Link href="/auth/login" className="text-brand-primary font-medium hover:underline">
-                    Log in
-                  </Link>
-                </p>
-              </div>
-            </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-primary/10 rounded-full mb-6">
+            <Home className="w-8 h-8 text-brand-primary" />
           </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Become a Host on Restiqo
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Join thousands of hosts earning money by sharing their properties with travelers from around the world.
+          </p>
+        </motion.div>
 
-          {/* Registration Form */}
-          <div className="lg:col-span-2 order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="clay-lg p-6 sm:p-8"
-            >
-              {/* Progress Steps */}
-              <div className="flex items-center justify-between mb-8">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="flex items-center">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-medium transition-colors ${
-                        currentStep >= step
-                          ? 'bg-brand-primary text-white'
-                          : 'bg-gray-200 text-gray-600'
-                      }`}
-                    >
-                      {currentStep > step ? <Check className="w-5 h-5" /> : step}
-                    </div>
-                    {step < 3 && (
-                      <div
-                        className={`w-16 sm:w-24 h-1 mx-2 rounded transition-colors ${
-                          currentStep > step ? 'bg-brand-primary' : 'bg-gray-200'
-                        }`}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Step Labels */}
-              <div className="flex justify-between mb-8 text-xs sm:text-sm">
-                <span className={currentStep >= 1 ? 'text-brand-primary font-medium' : 'text-gray-500'}>
-                  Personal Info
-                </span>
-                <span className={currentStep >= 2 ? 'text-brand-primary font-medium' : 'text-gray-500'}>
-                  Business Info
-                </span>
-                <span className={currentStep >= 3 ? 'text-brand-primary font-medium' : 'text-gray-500'}>
-                  Verification
-                </span>
-              </div>
-
-              <form onSubmit={handleSubmit}>
-                {/* Step 1: Personal Information */}
-                {currentStep === 1 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-5"
-                  >
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Personal Information</h2>
-                    
-                    <Input
-                      label="Full Name"
-                      placeholder="Enter your full name"
-                      value={formData.fullName}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      error={errors.fullName}
-                      leftIcon={<User className="w-5 h-5" />}
-                    />
-
-                    <Input
-                      label="Email Address"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      error={errors.email}
-                      leftIcon={<Mail className="w-5 h-5" />}
-                    />
-
-                    <Input
-                      label="Phone Number"
-                      type="tel"
-                      placeholder="+880 1XXX-XXXXXX"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      error={errors.phone}
-                      leftIcon={<Phone className="w-5 h-5" />}
-                    />
-
-                    <Input
-                      label="Password"
-                      type="password"
-                      placeholder="Create a password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      error={errors.password}
-                      leftIcon={<Shield className="w-5 h-5" />}
-                    />
-
-                    <Input
-                      label="Confirm Password"
-                      type="password"
-                      placeholder="Confirm your password"
-                      value={formData.confirmPassword}
-                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      error={errors.confirmPassword}
-                      leftIcon={<Shield className="w-5 h-5" />}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Step 2: Business Information */}
-                {currentStep === 2 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-5"
-                  >
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Business Information</h2>
-                    
-                    <Input
-                      label="Business Name"
-                      placeholder="Your business or brand name"
-                      value={formData.businessName}
-                      onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                      error={errors.businessName}
-                      leftIcon={<Building2 className="w-5 h-5" />}
-                    />
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Business Type
-                      </label>
-                      <select
-                        value={formData.businessType}
-                        onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
-                        className="clay-input w-full px-4 py-3 text-gray-900"
-                      >
-                        <option value="">Select business type</option>
-                        <option value="individual">Individual</option>
-                        <option value="company">Company</option>
-                        <option value="partnership">Partnership</option>
-                      </select>
-                      {errors.businessType && (
-                        <p className="text-red-500 text-sm mt-1">{errors.businessType}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Property Types (Select all that apply)
-                      </label>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        {propertyTypes.map((type) => (
-                          <button
-                            key={type.id}
-                            type="button"
-                            onClick={() => handlePropertyTypeToggle(type.id)}
-                            className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                              formData.propertyTypes.includes(type.id)
-                                ? 'border-brand-primary bg-brand-primary/5'
-                                : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <type.icon className={`w-5 h-5 ${
-                              formData.propertyTypes.includes(type.id) ? 'text-brand-primary' : 'text-gray-500'
-                            }`} />
-                            <span className={`font-medium ${
-                              formData.propertyTypes.includes(type.id) ? 'text-brand-primary' : 'text-gray-700'
-                            }`}>
-                              {type.label}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                      {errors.propertyTypes && (
-                        <p className="text-red-500 text-sm mt-1">{errors.propertyTypes}</p>
-                      )}
-                    </div>
-
-                    <Input
-                      label="Address"
-                      placeholder="Your business address"
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      leftIcon={<MapPin className="w-5 h-5" />}
-                    />
-
-                    <Input
-                      label="City"
-                      placeholder="City"
-                      value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      error={errors.city}
-                      leftIcon={<MapPin className="w-5 h-5" />}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Step 3: Verification */}
-                {currentStep === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-5"
-                  >
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Verification & Documents</h2>
-                    
-                    <Input
-                      label="National ID Number"
-                      placeholder="Enter your NID number"
-                      value={formData.nidNumber}
-                      onChange={(e) => setFormData({ ...formData, nidNumber: e.target.value })}
-                      error={errors.nidNumber}
-                      leftIcon={<FileText className="w-5 h-5" />}
-                    />
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Trade License (Optional)
-                      </label>
-                      <div className="clay-input p-4">
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
-                        />
-                        <p className="text-xs text-gray-500 mt-2">Upload PDF, JPG or PNG (max 5MB)</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-gray-50 rounded-xl p-4">
-                      <label className="flex items-start gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={formData.agreeTerms}
-                          onChange={(e) => setFormData({ ...formData, agreeTerms: e.target.checked })}
-                          className="w-5 h-5 rounded border-gray-300 text-brand-primary focus:ring-brand-primary mt-0.5"
-                        />
-                        <span className="text-sm text-gray-600">
-                          I agree to the{' '}
-                          <Link href="/terms" className="text-brand-primary hover:underline">
-                            Terms of Service
-                          </Link>{' '}
-                          and{' '}
-                          <Link href="/privacy" className="text-brand-primary hover:underline">
-                            Privacy Policy
-                          </Link>
-                          . I understand that my application will be reviewed before approval.
-                        </span>
-                      </label>
-                      {errors.agreeTerms && (
-                        <p className="text-red-500 text-sm mt-2">{errors.agreeTerms}</p>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Navigation Buttons */}
-                <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-                  {currentStep > 1 ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleBack}
-                    >
-                      Back
-                    </Button>
-                  ) : (
-                    <div />
-                  )}
-                  
-                  {currentStep < 3 ? (
-                    <Button
-                      type="button"
-                      variant="primary"
-                      onClick={handleNext}
-                      rightIcon={<ArrowRight className="w-5 h-5" />}
-                    >
-                      Continue
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      isLoading={isLoading}
-                      rightIcon={<Check className="w-5 h-5" />}
-                    >
-                      Submit Application
-                    </Button>
-                  )}
+        {/* Benefits */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-12"
+        >
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
+            Why Host with Us?
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + index * 0.1 }}
+                className="clay p-6 text-center"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-primary/10 rounded-xl mb-4">
+                  <benefit.icon className="w-6 h-6 text-brand-primary" />
                 </div>
-              </form>
-            </motion.div>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-gray-600">{benefit.description}</p>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
+
+        {/* How It Works */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-12"
+        >
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
+            How It Works
+          </h2>
+          <div className="flex flex-col sm:flex-row items-start gap-6">
+            {steps.map((step, index) => (
+              <div key={step.step} className="flex-1 flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-primary text-white rounded-full flex items-center justify-center font-bold">
+                  {step.step}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">{step.title}</h3>
+                  <p className="text-sm text-gray-600">{step.description}</p>
+                </div>
+                {index < steps.length - 1 && (
+                  <ArrowRight className="hidden sm:block w-5 h-5 text-gray-300 flex-shrink-0 mt-2" />
+                )}
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* CTA Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="clay-lg p-8"
+        >
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Ready to Start Hosting?
+            </h2>
+            <p className="text-gray-600">
+              Upgrade your account to a host and start listing your properties today.
+            </p>
+          </div>
+
+          {/* Terms Agreement */}
+          <div className="mb-6">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mt-1 w-5 h-5 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+              />
+              <span className="text-sm text-gray-600">
+                I agree to the{' '}
+                <Link href="/host-terms" className="text-brand-primary hover:underline">
+                  Host Terms of Service
+                </Link>{' '}
+                and understand the{' '}
+                <Link href="/host-guidelines" className="text-brand-primary hover:underline">
+                  Host Guidelines
+                </Link>
+                . I confirm that I will provide accurate information and maintain my properties to a high standard.
+              </span>
+            </label>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={handleBecomeHost}
+              disabled={loading || !agreed}
+              className="flex items-center justify-center gap-2 px-8 py-3 bg-brand-primary text-white font-medium rounded-xl hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Check className="w-5 h-5" />
+                  Become a Host
+                </>
+              )}
+            </button>
+            <Link
+              href="/dashboard"
+              className="flex items-center justify-center gap-2 px-8 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Maybe Later
+            </Link>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-green-500" />
+                <span>Secure Platform</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-500" />
+                <span>Trusted by 10,000+ Hosts</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-brand-primary" />
+                <span>Low 10% Service Fee</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   )
