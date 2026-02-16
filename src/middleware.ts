@@ -6,6 +6,7 @@ const PUBLIC_PATHS = ['/', '/auth', '/apartments', '/hotels', '/tours', '/search
 const GUEST_PATHS = ['/dashboard', '/bookings', '/wishlist', '/profile']
 const HOST_PATHS = ['/host']
 const ADMIN_PATHS = ['/admin']
+const STATIC_FILES = ['/sitemap.xml', '/robots.txt']
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -55,6 +56,11 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
+
+  // Allow static files (sitemap, robots.txt)
+  if (STATIC_FILES.includes(pathname)) {
+    return supabaseResponse
+  }
 
   // Check if path is public
   const isPublicPath = PUBLIC_PATHS.some(path => 
