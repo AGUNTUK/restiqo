@@ -106,8 +106,8 @@ export default function Navbar() {
           : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+        <div className="flex items-center justify-between h-20 gap-2">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <motion.div
@@ -313,7 +313,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200"
+            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200 flex-shrink-0 ml-2"
           >
             {isMenuOpen ? (
               <X className="w-6 h-6 text-[#1E293B]" />
