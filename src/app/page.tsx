@@ -576,7 +576,7 @@ export default function HomePage() {
                   
                   {/* Location Suggestions Dropdown */}
                   {isLocationDropdownOpen && searchData.location.length > 0 && filteredLocations.length > 0 && (
-                    <div className="fixed inset-x-4 sm:absolute sm:inset-x-0 bottom-auto sm:top-full top-1/2 -translate-y-1/2 sm:translate-y-0 sm:mt-2 neu-dropdown p-2 z-[100] sm:z-50 max-h-64 overflow-y-auto">
+                    <div className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-2 z-[100] max-h-64 overflow-y-auto">
                       {filteredLocations.map((loc, index) => (
                         <button
                           key={index}
@@ -652,7 +652,7 @@ export default function HomePage() {
                   {/* Guest Dropdown */}
                   {isGuestDropdownOpen && (
                     <div 
-                      className="fixed inset-x-4 sm:absolute sm:inset-x-0 bottom-auto sm:top-full sm:bottom-auto top-1/2 sm:mt-2 -translate-y-1/2 sm:translate-y-0 neu-dropdown p-4 z-[100] sm:z-50"
+                      className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-4 z-[100]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {/* Adults */}
