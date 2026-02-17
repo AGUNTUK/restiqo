@@ -8,7 +8,6 @@ import {
   Calendar,
   Users,
   ArrowRight,
-  Star,
   Building2,
   Home,
   Compass,
@@ -492,271 +491,264 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image - starts from very top */}
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920)',
-              filter: 'blur(15px)',
-              transform: 'scale(1.1)',
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E293B]/60 via-[#1E293B]/40 to-[#EEF2F6]" />
-        </div>
+      <section className="relative min-h-[100vh] overflow-hidden pt-20 sm:pt-28 pb-10 sm:pb-16">
+        <div className="absolute inset-0 bg-[#EAF0F5]" />
+        <div className="absolute left-1/2 top-[-260px] h-[740px] w-[1500px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(252,153,5,0.28)_0%,rgba(252,153,5,0.12)_35%,rgba(136,197,28,0.08)_65%,transparent_80%)] blur-2xl" />
+        <div className="absolute -left-36 top-28 h-24 w-[360px] rounded-full border border-white/80 bg-white/35 backdrop-blur-md rotate-[-16deg] shadow-[0_18px_35px_rgba(0,0,0,0.08)]" />
+        <div className="absolute -right-44 top-40 h-20 w-[320px] rounded-full border border-white/80 bg-white/30 backdrop-blur-md rotate-[18deg] shadow-[0_18px_35px_rgba(0,0,0,0.08)]" />
+        <div className="absolute left-8 sm:left-20 bottom-20 h-16 w-[220px] rounded-full bg-[#fc9905]/20 rotate-[-12deg]" />
+        <div className="absolute right-6 sm:right-16 bottom-14 h-20 w-[280px] rounded-full bg-[#88C51C]/20 rotate-[10deg]" />
 
-        {/* Content - with padding for fixed header */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-20 pt-20 sm:pt-36 lg:pt-40">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-6 sm:mb-12"
+            className="relative overflow-hidden rounded-[34px] sm:rounded-[52px] border border-white/80 bg-[linear-gradient(160deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.68)_100%)] shadow-[0_35px_75px_rgba(0,0,0,0.14)]"
           >
-            <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-6">
-              Discover Your Perfect
-              <span className="block gradient-text mt-1 sm:mt-2">Getaway</span>
-            </h1>
-            <p className="text-sm sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto px-2">
-              Explore premium apartments, hotels, and tours across Bangladesh
-            </p>
-          </motion.div>
+            <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#fc9905]/24 blur-3xl" />
+            <div className="absolute -left-28 -bottom-28 h-80 w-80 rounded-full bg-[#88C51C]/20 blur-3xl" />
+            <div className="absolute right-24 top-8 h-8 w-44 rounded-full bg-white/70 rotate-[12deg]" />
+            <div className="absolute left-16 bottom-10 h-8 w-52 rounded-full bg-white/55 -rotate-[10deg]" />
 
-          {/* Search Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="neu-xl p-3 sm:p-6 md:p-8 max-w-5xl mx-auto"
-          >
-            {/* Service Tabs */}
-            <div className="mb-3 sm:mb-4 overflow-x-auto scrollbar-hide -mx-1 px-1">
-              <div className="neu-tabs flex p-1 gap-0.5 sm:gap-1 min-w-max justify-center">
-                {serviceTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => handleTabChange(tab.id)}
-                    className={`flex items-center justify-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm ${
-                      activeTab === tab.id
-                        ? 'neu-tab-active'
-                        : 'neu-tab text-[#64748B]'
-                    }`}
-                  >
-                    <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap">{tab.label}</span>
-                  </button>
-                ))}
+            <div className="relative z-10 p-4 sm:p-8 lg:p-10">
+              <div className="text-center mb-6 sm:mb-10">
+                <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#1E293B] bg-white/80 border border-white shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+                  Ready For Your Next Adventure?
+                </span>
+                <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#1E293B] mt-3 sm:mt-5 mb-3 sm:mb-5">
+                  Discover Your Perfect
+                  <span className="block gradient-text mt-1 sm:mt-2">Getaway</span>
+                </h1>
+                <p className="text-sm sm:text-xl text-[#334155] max-w-2xl mx-auto px-2">
+                  Search apartments, hotels, and tours inside one streamlined booking experience.
+                </p>
               </div>
-            </div>
 
-            {/* Search Form */}
-            <form onSubmit={handleSearch}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
-                {/* Location */}
-                <div className="lg:col-span-1 relative" ref={locationDropdownRef}>
-                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
-                    Location
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
-                    <input
-                      type="text"
-                      placeholder="Where are you going?"
-                      value={searchData.location}
-                      onChange={(e) => {
-                        setSearchData({ ...searchData, location: e.target.value })
-                        setIsLocationDropdownOpen(true)
-                      }}
-                      onFocus={() => setIsLocationDropdownOpen(true)}
-                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
-                    />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="rounded-[28px] sm:rounded-[34px] border border-white/90 bg-[#EEF2F6]/88 p-3 sm:p-6 md:p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_36px_rgba(0,0,0,0.12)]"
+              >
+                <div className="mb-3 sm:mb-4 overflow-x-auto scrollbar-hide -mx-1 px-1">
+                  <div className="flex p-1.5 sm:p-2 gap-1 sm:gap-1.5 min-w-max justify-center rounded-full bg-white/80 shadow-[inset_3px_3px_8px_rgba(0,0,0,0.06),inset_-3px_-3px_8px_rgba(255,255,255,0.92)]">
+                    {serviceTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => handleTabChange(tab.id)}
+                        className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-2 sm:py-2.5 rounded-full font-semibold transition-all duration-200 text-xs sm:text-sm ${
+                          activeTab === tab.id
+                            ? 'text-white bg-[linear-gradient(135deg,var(--color-primary),var(--color-accent))] shadow-[0_10px_20px_rgba(252,153,5,0.28)]'
+                            : 'text-[#64748B] hover:bg-white/70'
+                        }`}
+                      >
+                        <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="whitespace-nowrap">{tab.label}</span>
+                      </button>
+                    ))}
                   </div>
-                  
-                  {/* Location Suggestions Dropdown */}
-                  {isLocationDropdownOpen && searchData.location.length > 0 && filteredLocations.length > 0 && (
-                    <div className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-2 z-[100] max-h-64 overflow-y-auto">
-                      {filteredLocations.map((loc, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          onClick={() => {
-                            setSearchData({ ...searchData, location: loc.name })
-                            setIsLocationDropdownOpen(false)
+                </div>
+
+                <form onSubmit={handleSearch}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
+                    <div className="lg:col-span-1 relative" ref={locationDropdownRef}>
+                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                        Location
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <input
+                          type="text"
+                          placeholder="Where are you going?"
+                          value={searchData.location}
+                          onChange={(e) => {
+                            setSearchData({ ...searchData, location: e.target.value })
+                            setIsLocationDropdownOpen(true)
                           }}
-                          className="neu-dropdown-item w-full text-left px-3 py-2 sm:py-2.5 rounded-xl flex items-center justify-between"
+                          onFocus={() => setIsLocationDropdownOpen(true)}
+                          className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base !rounded-full bg-white/90"
+                        />
+                      </div>
+
+                      {isLocationDropdownOpen && searchData.location.length > 0 && filteredLocations.length > 0 && (
+                        <div className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-2 z-[100] max-h-64 overflow-y-auto">
+                          {filteredLocations.map((loc, index) => (
+                            <button
+                              key={index}
+                              type="button"
+                              onClick={() => {
+                                setSearchData({ ...searchData, location: loc.name })
+                                setIsLocationDropdownOpen(false)
+                              }}
+                              className="neu-dropdown-item w-full text-left px-3 py-2 sm:py-2.5 rounded-xl flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary" />
+                                <span className="font-medium text-[#1E293B] text-xs sm:text-base">{loc.name}</span>
+                              </div>
+                              <span className="text-[10px] sm:text-xs text-[#64748B]">{loc.region}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                        Check In
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <input
+                          type="date"
+                          value={searchData.checkIn}
+                          onChange={(e) =>
+                            setSearchData({ ...searchData, checkIn: e.target.value })
+                          }
+                          className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base !rounded-full bg-white/90"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                        Check Out
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <input
+                          type="date"
+                          value={searchData.checkOut}
+                          onChange={(e) =>
+                            setSearchData({ ...searchData, checkOut: e.target.value })
+                          }
+                          className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base !rounded-full bg-white/90"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="relative z-[60]" ref={guestDropdownRef}>
+                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                        Guests
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setIsGuestDropdownOpen(!isGuestDropdownOpen)}
+                        className="neu-input w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-[#1E293B] text-left flex items-center justify-between text-xs sm:text-base !rounded-full bg-white/90"
+                      >
+                        <span className="truncate">{getGuestDisplayText()}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                      <Users className="absolute left-3 top-[30px] sm:top-[38px] w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+
+                      {isGuestDropdownOpen && (
+                        <div
+                          className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-4 z-[100]"
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary" />
-                            <span className="font-medium text-[#1E293B] text-xs sm:text-base">{loc.name}</span>
+                          <div className="flex items-center justify-between py-3">
+                            <div>
+                              <p className="font-medium text-[#1E293B]">Adults</p>
+                              <p className="text-sm text-[#64748B]">Ages 13 or above</p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  updateGuests('adults', false)
+                                }}
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                                disabled={guestCounts.adults <= 1}
+                              >
+                                <Minus className="w-4 h-4" />
+                              </button>
+                              <div className="w-10 h-8 overflow-hidden relative">
+                                <motion.span
+                                  key={guestCounts.adults}
+                                  initial={{ y: -20, opacity: 0 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  exit={{ y: 20, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
+                                >
+                                  {guestCounts.adults}
+                                </motion.span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  updateGuests('adults', true)
+                                }}
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
-                          <span className="text-[10px] sm:text-xs text-[#64748B]">{loc.region}</span>
-                        </button>
-                      ))}
+
+                          <div className="flex items-center justify-between py-3">
+                            <div>
+                              <p className="font-medium text-[#1E293B]">Children</p>
+                              <p className="text-sm text-[#64748B]">Ages 2-12</p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  updateGuests('children', false)
+                                }}
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                                disabled={guestCounts.children <= 0}
+                              >
+                                <Minus className="w-4 h-4" />
+                              </button>
+                              <div className="w-10 h-8 overflow-hidden relative">
+                                <motion.span
+                                  key={guestCounts.children}
+                                  initial={{ y: -20, opacity: 0 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  exit={{ y: 20, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
+                                >
+                                  {guestCounts.children}
+                                </motion.span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  updateGuests('children', true)
+                                }}
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {/* Check In */}
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
-                    Check In
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
-                    <input
-                      type="date"
-                      value={searchData.checkIn}
-                      onChange={(e) =>
-                        setSearchData({ ...searchData, checkIn: e.target.value })
-                      }
-                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
-                    />
-                  </div>
-                </div>
-
-                {/* Check Out */}
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
-                    Check Out
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
-                    <input
-                      type="date"
-                      value={searchData.checkOut}
-                      onChange={(e) =>
-                        setSearchData({ ...searchData, checkOut: e.target.value })
-                      }
-                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
-                    />
-                  </div>
-                </div>
-
-                {/* Guests */}
-                <div className="relative z-[60]" ref={guestDropdownRef}>
-                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
-                    Guests
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setIsGuestDropdownOpen(!isGuestDropdownOpen)}
-                    className="neu-input w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-[#1E293B] text-left flex items-center justify-between text-xs sm:text-base"
-                  >
-                    <span className="truncate">{getGuestDisplayText()}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  <Users className="absolute left-3 top-[30px] sm:top-[38px] w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
-                  
-                  {/* Guest Dropdown */}
-                  {isGuestDropdownOpen && (
-                    <div 
-                      className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-4 z-[100]"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {/* Adults */}
-                      <div className="flex items-center justify-between py-3">
-                        <div>
-                          <p className="font-medium text-[#1E293B]">Adults</p>
-                          <p className="text-sm text-[#64748B]">Ages 13 or above</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              updateGuests('adults', false)
-                            }}
-                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                            disabled={guestCounts.adults <= 1}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <div className="w-10 h-8 overflow-hidden relative">
-                            <motion.span 
-                              key={guestCounts.adults}
-                              initial={{ y: -20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              exit={{ y: 20, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
-                            >
-                              {guestCounts.adults}
-                            </motion.span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              updateGuests('adults', true)
-                            }}
-                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      {/* Children */}
-                      <div className="flex items-center justify-between py-3">
-                        <div>
-                          <p className="font-medium text-[#1E293B]">Children</p>
-                          <p className="text-sm text-[#64748B]">Ages 2-12</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              updateGuests('children', false)
-                            }}
-                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                            disabled={guestCounts.children <= 0}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <div className="w-10 h-8 overflow-hidden relative">
-                            <motion.span 
-                              key={guestCounts.children}
-                              initial={{ y: -20, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              exit={{ y: 20, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="absolute inset-0 flex items-center justify-center font-medium text-[#1E293B]"
-                            >
-                              {guestCounts.children}
-                            </motion.span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              updateGuests('children', true)
-                            }}
-                            className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
+                    <div className="flex items-end">
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        className="w-full py-2.5 sm:py-3 text-sm sm:text-base !rounded-full"
+                        rightIcon={<Search className="w-4 h-4 sm:w-5 sm:h-5" />}
+                      >
+                        Search
+                      </Button>
                     </div>
-                  )}
-                </div>
-
-                {/* Search Button */}
-                <div className="flex items-end">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    className="w-full py-2 sm:py-3 text-sm sm:text-base"
-                    rightIcon={<Search className="w-4 h-4 sm:w-5 sm:h-5" />}
-                  >
-                    Search
-                  </Button>
-                </div>
-              </div>
-            </form>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>

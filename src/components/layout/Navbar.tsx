@@ -99,8 +99,8 @@ export default function Navbar() {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${
         isScrolled
-          ? 'bg-[#EEF2F6]/90 backdrop-blur-md shadow-[0_8px_16px_rgba(0,0,0,0.08)]'
-          : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
+          ? 'bg-[#EEF2F6] shadow-[8px_8px_16px_rgba(0,0,0,0.08),-8px_-8px_16px_rgba(255,255,255,0.9)]'
+          : 'bg-[#EEF2F6] shadow-[4px_4px_8px_rgba(0,0,0,0.06),-4px_-4px_8px_rgba(255,255,255,0.8)]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
