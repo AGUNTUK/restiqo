@@ -122,32 +122,57 @@ export default function MobileBottomNav() {
   // Don't render until mounted to prevent hydration mismatch
   if (!mounted) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden h-20">
-        <div className="h-safe-area-inset-bottom bg-transparent" />
-      </div>
+      <div 
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden h-20"
+        style={{
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
+        }}
+      />
     )
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+    <nav 
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
+      style={{
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        paddingBottom: 'env(safe-area-inset-bottom, 0)',
+      }}
+    >
       {/* Main Navigation Container */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="mx-4 mb-3"
+        style={{
+          position: 'absolute',
+          bottom: '12px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 'calc(100% - 24px)',
+          maxWidth: '480px',
+          boxSizing: 'border-box',
+        }}
       >
         <div
-          className="relative flex items-center justify-around h-16 rounded-2xl px-2"
+          className="relative flex items-center justify-around h-16"
           style={{
             background: 'rgba(238, 242, 246, 0.95)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
+            borderRadius: '999px',
+            padding: '10px 14px',
             boxShadow: `
-              0 10px 40px rgba(0, 0, 0, 0.08),
-              0 2px 10px rgba(0, 0, 0, 0.04),
+              6px 6px 12px rgba(0,0,0,0.08),
+              -6px -6px 12px rgba(255,255,255,0.9),
               inset 0 1px 0 rgba(255, 255, 255, 0.8)
             `,
+            boxSizing: 'border-box',
+            overflow: 'hidden',
           }}
         >
           {/* Left Navigation Items */}
@@ -166,7 +191,8 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center w-16 h-full"
+                className="relative flex flex-col items-center justify-center flex-1 h-full"
+                style={{ maxWidth: '64px' }}
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>
@@ -186,7 +212,7 @@ export default function MobileBottomNav() {
                 {active && (
                   <motion.div
                     layoutId="activeIndicator"
-                    className="absolute top-1 w-6 h-1 rounded-full"
+                    className="absolute top-0 w-6 h-1 rounded-full"
                     style={{
                       background: 'linear-gradient(135deg, #62BBB1, #88C51C)',
                     }}
@@ -219,7 +245,8 @@ export default function MobileBottomNav() {
           <motion.button
             onClick={handleCenterClick}
             whileTap={{ scale: 0.9 }}
-            className="relative -mt-8 flex items-center justify-center"
+            className="relative flex items-center justify-center flex-shrink-0"
+            style={{ margin: '0 4px' }}
           >
             {/* Glow Effect */}
             <motion.div
@@ -244,14 +271,15 @@ export default function MobileBottomNav() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative w-14 h-14 rounded-full flex items-center justify-center"
+              className="relative w-12 h-12 rounded-full flex items-center justify-center"
               style={{
                 background: isHost
                   ? 'linear-gradient(135deg, #88C51C 0%, #6da315 100%)'
                   : 'linear-gradient(135deg, #62BBB1 0%, #4a9a91 100%)',
                 boxShadow: isHost
-                  ? '0 8px 24px rgba(136, 197, 28, 0.4), 0 2px 8px rgba(136, 197, 28, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
-                  : '0 8px 24px rgba(98, 187, 177, 0.4), 0 2px 8px rgba(98, 187, 177, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                  ? '0 6px 20px rgba(136, 197, 28, 0.4), 0 2px 6px rgba(136, 197, 28, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                  : '0 6px 20px rgba(98, 187, 177, 0.4), 0 2px 6px rgba(98, 187, 177, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                marginTop: '-20px',
               }}
             >
               {/* Inner highlight */}
@@ -264,15 +292,15 @@ export default function MobileBottomNav() {
 
               {/* Icon */}
               {isHost ? (
-                <Plus className="w-6 h-6 text-white stroke-[2.5]" />
+                <Plus className="w-5 h-5 text-white stroke-[2.5]" />
               ) : (
-                <Calendar className="w-5 h-5 text-white stroke-[2.5]" />
+                <Calendar className="w-4 h-4 text-white stroke-[2.5]" />
               )}
             </motion.div>
 
             {/* Label below button */}
             <span
-              className="absolute -bottom-6 text-[10px] font-medium whitespace-nowrap"
+              className="absolute -bottom-5 text-[10px] font-medium whitespace-nowrap"
               style={{ color: isHost ? '#6da315' : '#4a9a91' }}
             >
               {isHost ? 'Create' : 'Bookings'}
@@ -295,7 +323,8 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center w-16 h-full"
+                className="relative flex flex-col items-center justify-center flex-1 h-full"
+                style={{ maxWidth: '64px' }}
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>
@@ -315,7 +344,7 @@ export default function MobileBottomNav() {
                 {active && (
                   <motion.div
                     layoutId="activeIndicator"
-                    className="absolute top-1 w-6 h-1 rounded-full"
+                    className="absolute top-0 w-6 h-1 rounded-full"
                     style={{
                       background: 'linear-gradient(135deg, #62BBB1, #88C51C)',
                     }}
@@ -345,9 +374,6 @@ export default function MobileBottomNav() {
           })}
         </div>
       </motion.div>
-
-      {/* Safe area padding for iOS devices */}
-      <div className="h-safe-area-inset-bottom bg-transparent" />
     </nav>
   )
 }

@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Bell, X } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Bell } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 
 interface Notification {
@@ -17,7 +17,6 @@ interface Notification {
 
 export default function MobileHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [showNotifications, setShowNotifications] = useState(false)
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const { user, isAuthenticated } = useAuth()
@@ -46,15 +45,29 @@ export default function MobileHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-300 overflow-hidden ${
         isScrolled
           ? 'bg-[#EEF2F6]/95 backdrop-blur-lg shadow-[0_4px_20px_rgba(0,0,0,0.06)]'
           : 'bg-[#EEF2F6]/80 backdrop-blur-sm'
       }`}
+      style={{
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        paddingTop: 'env(safe-area-inset-top, 0)',
+      }}
     >
-      <div className="flex items-center justify-between h-14 px-4 safe-area-top">
+      <div
+        className="flex items-center justify-between h-14 px-4"
+        style={{
+          width: '100%',
+          maxWidth: '480px',
+          margin: '0 auto',
+          boxSizing: 'border-box',
+        }}
+      >
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center flex-shrink-0">
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -72,7 +85,7 @@ export default function MobileHeader() {
         </Link>
 
         {/* Right Side - Notification Bell */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center flex-shrink-0">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -98,9 +111,6 @@ export default function MobileHeader() {
           </motion.button>
         </div>
       </div>
-
-      {/* Safe area spacing for iOS */}
-      <div className="h-safe-area-inset-top" />
     </header>
   )
 }
