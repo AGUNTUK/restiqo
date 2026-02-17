@@ -3,23 +3,17 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Bell } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
-
-interface Notification {
-  id: string
-  title: string
-  message: string
-  created_at: string
-  read: boolean
-}
+import { useRealtimeNotifications } from '@/lib/realtime'
 
 export default function MobileHeader() {
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [unreadCount, setUnreadCount] = useState(0)
   const { user, isAuthenticated } = useAuth()
+  const { unreadCount } = useRealtimeNotifications(user?.id || null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,18 +23,12 @@ export default function MobileHeader() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Fetch notifications count
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      // For now, we'll set a mock unread count
-      // In production, this would fetch from the database
-      setUnreadCount(0)
-    }
-  }, [isAuthenticated, user])
-
   const handleNotificationClick = () => {
-    // Navigate to notifications tab in dashboard
-    window.location.href = '/dashboard?tab=notifications'
+    if (!isAuthenticated) {
+      router.push(`/auth/login?redirect=${encodeURIComponent('/dashboard?tab=notifications')}`)
+      return
+    }
+    router.push('/dashboard?tab=notifications')
   }
 
   return (

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu,
@@ -19,6 +19,8 @@ import {
   Home,
   Shield,
   Building,
+  Bell,
+  MessageSquare,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { useAuth } from '@/lib/auth'
@@ -30,7 +32,6 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const pathname = usePathname()
-  const router = useRouter()
   
   const { user, profile, isAuthenticated, isLoading, isHost, isAdmin, signOut } = useAuth()
 
@@ -222,6 +223,24 @@ export default function Navbar() {
                           <span>Wishlist</span>
                         </Link>
 
+                        <Link
+                          href="/dashboard?tab=inbox"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
+                        >
+                          <MessageSquare className="w-5 h-5 text-[#64748B]" />
+                          <span>Inbox</span>
+                        </Link>
+
+                        <Link
+                          href="/dashboard?tab=notifications"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="neu-dropdown-item flex items-center gap-3 px-4 py-2.5 text-[#1E293B] rounded-xl mx-2"
+                        >
+                          <Bell className="w-5 h-5 text-[#64748B]" />
+                          <span>Notifications</span>
+                        </Link>
+
                         {isHost && (
                           <Link
                             href="/host"
@@ -366,6 +385,33 @@ export default function Navbar() {
                     >
                       <Calendar className="w-5 h-5 text-[#64748B]" />
                       <span>My Bookings</span>
+                    </Link>
+
+                    <Link
+                      href="/dashboard?tab=wishlist"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
+                    >
+                      <Heart className="w-5 h-5 text-[#64748B]" />
+                      <span>Wishlist</span>
+                    </Link>
+
+                    <Link
+                      href="/dashboard?tab=inbox"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
+                    >
+                      <MessageSquare className="w-5 h-5 text-[#64748B]" />
+                      <span>Inbox</span>
+                    </Link>
+
+                    <Link
+                      href="/dashboard?tab=notifications"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[#1E293B] neu-button rounded-xl"
+                    >
+                      <Bell className="w-5 h-5 text-[#64748B]" />
+                      <span>Notifications</span>
                     </Link>
 
                     {isHost && (

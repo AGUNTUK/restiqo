@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home,
@@ -23,14 +23,10 @@ interface NavItem {
 
 export default function MobileBottomNav() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const router = useRouter()
-  const { isAuthenticated, isHost, isLoading } = useAuth()
+  const { isAuthenticated, isHost } = useAuth()
   const [pressedItem, setPressedItem] = useState<string | null>(null)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   // Define navigation items
   const leftNavItems: NavItem[] = [
@@ -82,16 +78,23 @@ export default function MobileBottomNav() {
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
+
     if (href.includes('?tab=')) {
-      const [path] = href.split('?tab=')
-      return pathname === path
+      const [path, tabQuery] = href.split('?tab=')
+      const targetTab = tabQuery || ''
+      return pathname === path && searchParams.get('tab') === targetTab
     }
+
+    if (href === '/dashboard') {
+      return pathname === '/dashboard' && !searchParams.get('tab')
+    }
+
     return pathname.startsWith(href)
   }
 
   const handleNavClick = (item: NavItem) => {
     if (item.requiresAuth && !isAuthenticated) {
-      router.push('/auth/login')
+      router.push(`/auth/login?redirect=${encodeURIComponent(item.href)}`)
       return
     }
     router.push(item.href)
@@ -99,7 +102,7 @@ export default function MobileBottomNav() {
 
   const handleCenterClick = () => {
     if (!isAuthenticated) {
-      router.push('/auth/login')
+      router.push(`/auth/login?redirect=${encodeURIComponent(centerButton.href)}`)
       return
     }
     router.push(centerButton.href)
@@ -117,20 +120,6 @@ export default function MobileBottomNav() {
     initial: { scale: 1 },
     tap: { scale: 0.9 },
     hover: { scale: 1.05 },
-  }
-
-  // Don't render until mounted to prevent hydration mismatch
-  if (!mounted) {
-    return (
-      <div 
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden h-20"
-        style={{
-          width: '100%',
-          maxWidth: '100%',
-          boxSizing: 'border-box',
-        }}
-      />
-    )
   }
 
   return (
@@ -214,7 +203,7 @@ export default function MobileBottomNav() {
                     layoutId="activeIndicator"
                     className="absolute top-0 w-6 h-1 rounded-full"
                     style={{
-                      background: 'linear-gradient(135deg, #62BBB1, #88C51C)',
+                      background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
@@ -263,7 +252,7 @@ export default function MobileBottomNav() {
               style={{
                 background: isHost
                   ? 'radial-gradient(circle, rgba(136, 197, 28, 0.3) 0%, transparent 70%)'
-                  : 'radial-gradient(circle, rgba(98, 187, 177, 0.3) 0%, transparent 70%)',
+                  : 'radial-gradient(circle, rgba(252, 153, 5, 0.3) 0%, transparent 70%)',
               }}
             />
 
@@ -275,10 +264,10 @@ export default function MobileBottomNav() {
               style={{
                 background: isHost
                   ? 'linear-gradient(135deg, #88C51C 0%, #6da315 100%)'
-                  : 'linear-gradient(135deg, #62BBB1 0%, #4a9a91 100%)',
+                  : 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)',
                 boxShadow: isHost
                   ? '0 6px 20px rgba(136, 197, 28, 0.4), 0 2px 6px rgba(136, 197, 28, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
-                  : '0 6px 20px rgba(98, 187, 177, 0.4), 0 2px 6px rgba(98, 187, 177, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                  : '0 6px 20px rgba(252, 153, 5, 0.4), 0 2px 6px rgba(252, 153, 5, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
                 border: '3px solid rgba(238, 242, 246, 0.95)',
               }}
             >
@@ -301,7 +290,7 @@ export default function MobileBottomNav() {
             {/* Label below button */}
             <span
               className="absolute -bottom-5 text-[10px] font-medium whitespace-nowrap"
-              style={{ color: isHost ? '#6da315' : '#4a9a91' }}
+              style={{ color: isHost ? '#6da315' : 'var(--color-primary-dark)' }}
             >
               {isHost ? 'Create' : 'Bookings'}
             </span>
@@ -345,7 +334,7 @@ export default function MobileBottomNav() {
                     layoutId="activeIndicator"
                     className="absolute top-0 w-6 h-1 rounded-full"
                     style={{
-                      background: 'linear-gradient(135deg, #62BBB1, #88C51C)',
+                      background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
@@ -376,3 +365,4 @@ export default function MobileBottomNav() {
     </nav>
   )
 }
+

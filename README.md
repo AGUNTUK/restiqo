@@ -40,7 +40,7 @@ Restiqo features a modern Claymorphism design with:
 - Premium minimalistic feel
 
 ### Brand Colors
-- **Primary**: `#62BBB1` (Teal)
+- **Primary**: `#fc9905` (Orange)
 - **Accent**: `#88C51C` (Green)
 - **Secondary**: `#218877`
 - **Background**: `#F4E2AD` / Soft light neutral
@@ -221,3 +221,4 @@ For support, email hello@restiqo.com or join our Discord channel.
 ---
 
 Built with ❤️ in Bangladesh
+

@@ -4,9 +4,9 @@
   /* Neumorphism Color System */
   --color-background: #EEF2F6;
   --color-background-light: #EEF2F6;
-  --color-primary: #62BBB1;
-  --color-primary-dark: #4a9a91;
-  --color-primary-light: #7dccd3;
+  --color-primary: #fc9905;
+  --color-primary-dark: #d67f00;
+  --color-primary-light: #fdb84d;
   --color-accent: #88C51C;
   --color-accent-dark: #6da315;
   --color-accent-light: #9dd42a;
@@ -39,9 +39,9 @@
 
 /* Custom Tailwind Theme */
 :root {
-  --color-brand-primary: #62BBB1;
-  --color-brand-primary-dark: #4a9a91;
-  --color-brand-primary-light: #7dccd3;
+  --color-brand-primary: #fc9905;
+  --color-brand-primary-dark: #d67f00;
+  --color-brand-primary-light: #fdb84d;
   --color-brand-accent: #88C51C;
   --color-brand-accent-dark: #6da315;
   --color-brand-accent-light: #9dd42a;
@@ -81,7 +81,7 @@
     inset -4px -4px 8px rgba(255, 255, 255, 0.8);
   
   --shadow-neu-primary: 
-    8px 8px 16px rgba(98, 187, 177, 0.25),
+    8px 8px 16px rgba(252, 153, 5, 0.25),
     -8px -8px 16px rgba(255, 255, 255, 0.9);
   
   --shadow-neu-accent: 
@@ -204,7 +204,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-primary);
   border-radius: var(--radius-md);
   box-shadow: 
-    8px 8px 16px rgba(98, 187, 177, 0.25),
+    8px 8px 16px rgba(252, 153, 5, 0.25),
     -8px -8px 16px var(--shadow-light);
 }
 
@@ -248,7 +248,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-primary);
   border-radius: var(--radius-md);
   box-shadow: 
-    6px 6px 12px rgba(98, 187, 177, 0.3),
+    6px 6px 12px rgba(252, 153, 5, 0.3),
     -6px -6px 12px var(--shadow-light);
   border: none;
   transition: all 0.2s ease;
@@ -258,7 +258,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-button-primary:hover {
   box-shadow: 
-    8px 8px 16px rgba(98, 187, 177, 0.35),
+    8px 8px 16px rgba(252, 153, 5, 0.35),
     -8px -8px 16px var(--shadow-light);
   background: var(--color-primary-dark);
 }
@@ -385,7 +385,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-primary);
   border-radius: var(--radius-full);
   box-shadow: 
-    3px 3px 6px rgba(98, 187, 177, 0.25),
+    3px 3px 6px rgba(252, 153, 5, 0.25),
     -3px -3px 6px var(--shadow-light-sm);
   color: white;
   font-weight: 500;
@@ -514,7 +514,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-primary);
   border-radius: var(--radius-md);
   box-shadow: 
-    4px 4px 8px rgba(98, 187, 177, 0.25),
+    4px 4px 8px rgba(252, 153, 5, 0.25),
     -4px -4px 8px var(--shadow-light-sm);
   display: flex;
   align-items: center;
@@ -802,7 +802,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-primary);
   border-radius: var(--radius-full);
   box-shadow: 
-    2px 2px 4px rgba(98, 187, 177, 0.3),
+    2px 2px 4px rgba(252, 153, 5, 0.3),
     -2px -2px 4px rgba(255, 255, 255, 0.5);
 }
 
@@ -830,7 +830,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-toggle-active .neu-toggle-handle {
   background: var(--color-primary);
   box-shadow: 
-    3px 3px 6px rgba(98, 187, 177, 0.3),
+    3px 3px 6px rgba(252, 153, 5, 0.3),
     -3px -3px 6px var(--shadow-light-sm);
 }
 
@@ -873,7 +873,7 @@ h1, h2, h3, h4, h5, h6 {
 .focus-ring:focus {
   outline: none;
   box-shadow: 
-    0 0 0 3px rgba(98, 187, 177, 0.3),
+    0 0 0 3px rgba(252, 153, 5, 0.3),
     6px 6px 12px var(--shadow-dark),
     -6px -6px 12px var(--shadow-light);
 }
@@ -1023,7 +1023,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 24px;
   height: 4px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #62BBB1, #88C51C);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
 }
 
 /* Center Floating Button */
@@ -1074,7 +1074,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 32px;
   height: 32px;
   border-radius: 9999px;
-  background: rgba(98, 187, 177, 0.2);
+  background: rgba(252, 153, 5, 0.2);
   pointer-events: none;
 }
 
@@ -1184,3 +1184,4 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.75rem;
   }
 }
+

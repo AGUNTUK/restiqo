@@ -109,7 +109,7 @@ export default function NotificationDropdown() {
                   <motion.button
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    whileHover={{ backgroundColor: 'rgba(98, 187, 177, 0.05)' }}
+                    whileHover={{ backgroundColor: 'rgba(252, 153, 5, 0.05)' }}
                     className={`w-full p-4 flex items-start gap-3 text-left border-b border-gray-50 last:border-0 ${
                       !notification.read_at ? 'bg-brand-primary/5' : ''
                     }`}
@@ -155,3 +155,4 @@ export default function NotificationDropdown() {
     </div>
   )
 }
+
