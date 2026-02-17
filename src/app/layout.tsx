@@ -100,7 +100,7 @@ export default async function RootLayout({
             {/* Mobile Header - Hidden on desktop */}
             <MobileHeader />
             
-            <main className="min-h-screen pt-16 md:pt-0">
+            <main className="min-h-screen pt-16 md:pt-0 has-mobile-nav">
               {children}
             </main>
             

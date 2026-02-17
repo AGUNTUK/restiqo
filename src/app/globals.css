@@ -38,7 +38,7 @@
 }
 
 /* Custom Tailwind Theme */
-@theme {
+:root {
   --color-brand-primary: #62BBB1;
   --color-brand-primary-dark: #4a9a91;
   --color-brand-primary-light: #7dccd3;

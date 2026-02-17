@@ -150,22 +150,23 @@ export default function MobileBottomNav() {
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         style={{
           position: 'absolute',
-          bottom: '12px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'calc(100% - 24px)',
+          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
+          left: '8px',
+          right: '8px',
+          width: 'auto',
           maxWidth: '480px',
+          margin: '0 auto',
           boxSizing: 'border-box',
         }}
       >
         <div
-          className="relative flex items-center justify-around h-16"
+          className="relative flex w-full items-center justify-between h-16 mx-auto"
           style={{
             background: 'rgba(238, 242, 246, 0.95)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             borderRadius: '999px',
-            padding: '10px 14px',
+            padding: '10px 8px',
             boxShadow: `
               6px 6px 12px rgba(0,0,0,0.08),
               -6px -6px 12px rgba(255,255,255,0.9),
@@ -191,8 +192,7 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center flex-1 h-full"
-                style={{ maxWidth: '64px' }}
+                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0"
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>
@@ -246,7 +246,7 @@ export default function MobileBottomNav() {
             onClick={handleCenterClick}
             whileTap={{ scale: 0.9 }}
             className="relative flex items-center justify-center flex-shrink-0"
-            style={{ margin: '0 4px' }}
+            style={{ margin: '0 2px' }}
           >
             {/* Glow Effect */}
             <motion.div
@@ -323,8 +323,7 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center flex-1 h-full"
-                style={{ maxWidth: '64px' }}
+                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0"
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>

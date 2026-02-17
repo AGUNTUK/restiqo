@@ -188,15 +188,15 @@ export default function Footer() {
                   Get the latest updates and offers directly in your inbox.
                 </p>
               </div>
-              <form className="flex w-full md:w-auto gap-2 sm:gap-3">
+              <form className="flex w-full md:w-auto min-w-0 flex-col sm:flex-row gap-2 sm:gap-3">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 md:w-64 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl neu-input text-[#1E293B] placeholder-[#94A3B8] text-sm sm:text-base"
+                  className="w-full min-w-0 sm:flex-1 md:w-64 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl neu-input text-[#1E293B] placeholder-[#94A3B8] text-sm sm:text-base"
                 />
                 <button
                   type="submit"
-                  className="neu-button-primary px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base whitespace-nowrap"
+                  className="neu-button-primary w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium text-sm sm:text-base whitespace-nowrap"
                 >
                   Subscribe
                 </button>
