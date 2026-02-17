@@ -173,7 +173,7 @@ export default function MobileBottomNav() {
               inset 0 1px 0 rgba(255, 255, 255, 0.8)
             `,
             boxSizing: 'border-box',
-            overflow: 'hidden',
+            overflow: 'visible',
           }}
         >
           {/* Left Navigation Items */}
@@ -245,8 +245,8 @@ export default function MobileBottomNav() {
           <motion.button
             onClick={handleCenterClick}
             whileTap={{ scale: 0.9 }}
-            className="relative flex items-center justify-center flex-shrink-0"
-            style={{ margin: '0 2px' }}
+            className="relative z-10 flex items-center justify-center flex-shrink-0"
+            style={{ margin: '0 2px', marginTop: '-30px' }}
           >
             {/* Glow Effect */}
             <motion.div
@@ -279,7 +279,7 @@ export default function MobileBottomNav() {
                 boxShadow: isHost
                   ? '0 6px 20px rgba(136, 197, 28, 0.4), 0 2px 6px rgba(136, 197, 28, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
                   : '0 6px 20px rgba(98, 187, 177, 0.4), 0 2px 6px rgba(98, 187, 177, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                marginTop: '-20px',
+                border: '3px solid rgba(238, 242, 246, 0.95)',
               }}
             >
               {/* Inner highlight */}
