@@ -94,7 +94,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full overflow-visible transition-all duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${
         isScrolled
@@ -102,7 +102,7 @@ export default function Navbar() {
           : 'bg-[#EEF2F6]/70 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="flex items-center justify-between h-16 sm:h-20 min-w-0">
           
           <Link href="/" className="flex items-center">
