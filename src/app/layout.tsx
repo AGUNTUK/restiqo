@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'Restiqo Team' }],
   creator: 'Restiqo',
   publisher: 'Restiqo',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
   formatDetection: {
     email: false,
     address: false,
