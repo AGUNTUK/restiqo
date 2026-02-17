@@ -896,3 +896,251 @@ h1, h2, h3, h4, h5, h6 {
 .border-subtle {
   border-color: rgba(0, 0, 0, 0.05);
 }
+
+/* ============================================
+   SAFE AREA INSETS (iOS PWA Support)
+   ============================================ */
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.h-safe-area-inset-top {
+  height: env(safe-area-inset-top, 0);
+}
+
+.h-safe-area-inset-bottom {
+  height: env(safe-area-inset-bottom, 0);
+}
+
+/* ============================================
+   MOBILE NAVIGATION STYLES
+   ============================================ */
+
+/* Mobile Header */
+.mobile-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.mobile-header-scrolled {
+  background: rgba(238, 242, 246, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile Bottom Navigation Container */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+.mobile-bottom-nav-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 64px;
+  border-radius: 24px;
+  padding: 0 8px;
+  margin: 0 16px 12px;
+  background: rgba(238, 242, 246, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 2px 10px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Mobile Nav Item */
+.mobile-nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-item-icon {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-item-label {
+  font-size: 10px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Active State */
+.mobile-nav-item-active .mobile-nav-item-icon {
+  color: var(--color-primary);
+  stroke-width: 2.5;
+}
+
+.mobile-nav-item-active .mobile-nav-item-label {
+  color: var(--color-primary);
+}
+
+/* Inactive State */
+.mobile-nav-item-inactive .mobile-nav-item-icon {
+  color: #64748B;
+  stroke-width: 2;
+}
+
+.mobile-nav-item-inactive .mobile-nav-item-label {
+  color: #94A3B8;
+}
+
+/* Active Indicator Dot */
+.mobile-nav-indicator {
+  position: absolute;
+  top: 4px;
+  width: 24px;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #62BBB1, #88C51C);
+}
+
+/* Center Floating Button */
+.mobile-nav-center-button {
+  position: relative;
+  margin-top: -32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mobile-nav-center-button-glow {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+}
+
+.mobile-nav-center-button-container {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-center-button-highlight {
+  position: absolute;
+  inset: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+}
+
+.mobile-nav-center-button-label {
+  position: absolute;
+  bottom: -24px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Ripple Effect */
+.mobile-nav-ripple {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: rgba(98, 187, 177, 0.2);
+  pointer-events: none;
+}
+
+/* ============================================
+   MOBILE NAVIGATION ANIMATIONS
+   ============================================ */
+
+@keyframes mobile-nav-enter {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes center-button-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes ripple-expand {
+  from {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.animate-mobile-nav-enter {
+  animation: mobile-nav-enter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-center-button-glow {
+  animation: center-button-glow 2s ease-in-out infinite;
+}
+
+.animate-ripple-expand {
+  animation: ripple-expand 0.4s ease-out forwards;
+}
+
+/* ============================================
+   MOBILE CONTENT SPACING
+   ============================================ */
+
+/* Add padding at bottom for mobile nav */
+@media (max-width: 768px) {
+  .has-mobile-nav {
+    padding-bottom: 100px;
+  }
+  
+  /* Hide desktop navigation on mobile */
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Hide mobile navigation on desktop */
+  .mobile-only {
+    display: none !important;
+  }
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
-import { Navbar, Footer, BottomNav } from '@/components/layout'
+import { Navbar, Footer, MobileHeader, MobileBottomNav } from '@/components/layout'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/lib/auth'
 import { NextIntlClientProvider } from 'next-intl'
@@ -92,12 +92,23 @@ export default async function RootLayout({
       <body className={`${poppins.variable} font-sans antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
-            <Navbar />
-            <main className="min-h-screen pb-20 md:pb-0">
+            {/* Desktop Navbar - Hidden on mobile */}
+            <div className="hidden md:block">
+              <Navbar />
+            </div>
+            
+            {/* Mobile Header - Hidden on desktop */}
+            <MobileHeader />
+            
+            <main className="min-h-screen pt-14 md:pt-0 pb-24 md:pb-0">
               {children}
             </main>
+            
             <Footer />
-            <BottomNav />
+            
+            {/* Mobile Bottom Navigation - Hidden on desktop */}
+            <MobileBottomNav />
+            
             <Toaster
               position="top-right"
               toastOptions={{
