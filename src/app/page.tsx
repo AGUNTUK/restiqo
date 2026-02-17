@@ -507,18 +507,18 @@ export default function HomePage() {
         </div>
 
         {/* Content - with padding for fixed header */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 pt-32 sm:pt-36 lg:pt-40">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-20 pt-20 sm:pt-36 lg:pt-40">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-8 sm:mb-12"
+            className="text-center mb-6 sm:mb-12"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-6">
               Discover Your Perfect
-              <span className="block gradient-text mt-2">Getaway</span>
+              <span className="block gradient-text mt-1 sm:mt-2">Getaway</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto px-4">
+            <p className="text-sm sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto px-2">
               Explore premium apartments, hotels, and tours across Bangladesh
             </p>
           </motion.div>
@@ -528,23 +528,23 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="neu-xl p-4 sm:p-6 md:p-8 max-w-5xl mx-auto"
+            className="neu-xl p-3 sm:p-6 md:p-8 max-w-5xl mx-auto"
           >
             {/* Service Tabs */}
-            <div className="mb-4 overflow-x-auto">
-              <div className="neu-tabs flex p-1.5 gap-1 min-w-max">
+            <div className="mb-3 sm:mb-4 overflow-x-auto scrollbar-hide -mx-1 px-1">
+              <div className="neu-tabs flex p-1 gap-0.5 sm:gap-1 min-w-max justify-center">
                 {serviceTabs.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
                     onClick={() => handleTabChange(tab.id)}
-                    className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl font-medium transition-all duration-200 text-sm sm:text-base ${
+                    className={`flex items-center justify-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm ${
                       activeTab === tab.id
                         ? 'neu-tab-active'
                         : 'neu-tab text-[#64748B]'
                     }`}
                   >
-                    <tab.icon className="w-4 h-4 flex-shrink-0" />
+                    <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                     <span className="whitespace-nowrap">{tab.label}</span>
                   </button>
                 ))}
@@ -553,14 +553,14 @@ export default function HomePage() {
 
             {/* Search Form */}
             <form onSubmit={handleSearch}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
                 {/* Location */}
                 <div className="lg:col-span-1 relative" ref={locationDropdownRef}>
-                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                     Location
                   </label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
                     <input
                       type="text"
                       placeholder="Where are you going?"
@@ -570,7 +570,7 @@ export default function HomePage() {
                         setIsLocationDropdownOpen(true)
                       }}
                       onFocus={() => setIsLocationDropdownOpen(true)}
-                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
+                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
                     />
                   </div>
                   
@@ -585,13 +585,13 @@ export default function HomePage() {
                             setSearchData({ ...searchData, location: loc.name })
                             setIsLocationDropdownOpen(false)
                           }}
-                          className="neu-dropdown-item w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between"
+                          className="neu-dropdown-item w-full text-left px-3 py-2 sm:py-2.5 rounded-xl flex items-center justify-between"
                         >
                           <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-brand-primary" />
-                            <span className="font-medium text-[#1E293B]">{loc.name}</span>
+                            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary" />
+                            <span className="font-medium text-[#1E293B] text-xs sm:text-base">{loc.name}</span>
                           </div>
-                          <span className="text-xs text-[#64748B]">{loc.region}</span>
+                          <span className="text-[10px] sm:text-xs text-[#64748B]">{loc.region}</span>
                         </button>
                       ))}
                     </div>
@@ -600,54 +600,54 @@ export default function HomePage() {
 
                 {/* Check In */}
                 <div>
-                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                     Check In
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
                     <input
                       type="date"
                       value={searchData.checkIn}
                       onChange={(e) =>
                         setSearchData({ ...searchData, checkIn: e.target.value })
                       }
-                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
+                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
                     />
                   </div>
                 </div>
 
                 {/* Check Out */}
                 <div>
-                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                     Check Out
                   </label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
                     <input
                       type="date"
                       value={searchData.checkOut}
                       onChange={(e) =>
                         setSearchData({ ...searchData, checkOut: e.target.value })
                       }
-                      className="neu-input w-full pl-10 pr-4 py-3 text-[#1E293B]"
+                      className="neu-input w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-[#1E293B] text-xs sm:text-base"
                     />
                   </div>
                 </div>
 
                 {/* Guests */}
                 <div className="relative z-[60]" ref={guestDropdownRef}>
-                  <label className="block text-sm font-medium text-[#1E293B] mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                     Guests
                   </label>
                   <button
                     type="button"
                     onClick={() => setIsGuestDropdownOpen(!isGuestDropdownOpen)}
-                    className="neu-input w-full pl-10 pr-10 py-3 text-[#1E293B] text-left flex items-center justify-between"
+                    className="neu-input w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-[#1E293B] text-left flex items-center justify-between text-xs sm:text-base"
                   >
                     <span className="truncate">{getGuestDisplayText()}</span>
-                    <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  <Users className="absolute left-3 top-[38px] w-5 h-5 text-[#64748B]" />
+                  <Users className="absolute left-3 top-[30px] sm:top-[38px] w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
                   
                   {/* Guest Dropdown */}
                   {isGuestDropdownOpen && (
@@ -749,8 +749,8 @@ export default function HomePage() {
                   <Button
                     type="submit"
                     variant="primary"
-                    className="w-full py-3"
-                    rightIcon={<Search className="w-5 h-5" />}
+                    className="w-full py-2 sm:py-3 text-sm sm:text-base"
+                    rightIcon={<Search className="w-4 h-4 sm:w-5 sm:h-5" />}
                   >
                     Search
                   </Button>
@@ -762,25 +762,25 @@ export default function HomePage() {
       </section>
 
       {/* Featured Apartments */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-12">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-1 sm:mb-2">
                 Featured Apartments
               </h2>
-              <p className="text-sm sm:text-base text-[#64748B]">
+              <p className="text-xs sm:text-base text-[#64748B]">
                 Handpicked apartments for your perfect stay
               </p>
             </div>
             <Link href="/apartments" className="self-start sm:self-auto">
-              <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
+              <Button variant="outline" rightIcon={<ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />} className="text-xs sm:text-sm py-2 sm:py-2.5">
                 View All
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
             {featuredApartments.map((property, index) => (
               <motion.div
                 key={property.id}
@@ -798,26 +798,26 @@ export default function HomePage() {
       </section>
 
       {/* Popular Hotels */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="neu-panel-inset p-4 sm:p-8 lg:p-12">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
+          <div className="neu-panel-inset p-3 sm:p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-12">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+                <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-1 sm:mb-2">
                   Popular Hotels
                 </h2>
-                <p className="text-sm sm:text-base text-[#64748B]">
+                <p className="text-xs sm:text-base text-[#64748B]">
                   Top-rated hotels with exceptional service
                 </p>
               </div>
               <Link href="/hotels" className="self-start sm:self-auto">
-                <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                <Button variant="outline" rightIcon={<ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />} className="text-xs sm:text-sm py-2 sm:py-2.5">
                   View All
                 </Button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
               {popularHotels.map((property, index) => (
                 <motion.div
                   key={property.id}
@@ -836,25 +836,25 @@ export default function HomePage() {
       </section>
 
       {/* Trending Tours */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-12">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-1 sm:mb-2">
                 Trending Tours
               </h2>
-              <p className="text-sm sm:text-base text-[#64748B]">
+              <p className="text-xs sm:text-base text-[#64748B]">
                 Unforgettable experiences across Bangladesh
               </p>
             </div>
             <Link href="/tours" className="self-start sm:self-auto">
-              <Button variant="outline" rightIcon={<ArrowRight className="w-4 h-4" />}>
+              <Button variant="outline" rightIcon={<ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />} className="text-xs sm:text-sm py-2 sm:py-2.5">
                 View All
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
             {trendingTours.map((property, index) => (
               <motion.div
                 key={property.id}
@@ -872,19 +872,19 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-4">
+          <div className="text-center mb-6 sm:mb-12 lg:mb-16">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] mb-2 sm:mb-4">
               Why Choose Restiqo?
             </h2>
-            <p className="text-sm sm:text-base text-[#64748B] max-w-2xl mx-auto">
+            <p className="text-xs sm:text-base text-[#64748B] max-w-2xl mx-auto">
               We provide the best travel experience with premium properties,
               secure bookings, and exceptional customer service.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
             {[
               {
                 icon: '🏠',
@@ -913,13 +913,13 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="neu-card p-6 text-center"
+                className="neu-card p-3 sm:p-6 text-center"
               >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-lg font-semibold text-[#1E293B] mb-2">
+                <div className="text-2xl sm:text-4xl mb-2 sm:mb-4">{feature.icon}</div>
+                <h3 className="text-sm sm:text-lg font-semibold text-[#1E293B] mb-1 sm:mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-[#64748B] text-sm">{feature.description}</p>
+                <p className="text-[#64748B] text-[10px] sm:text-sm">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -927,19 +927,19 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-20 px-4 sm:px-6 lg:px-8 mb-16 sm:mb-0">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="neu-primary p-8 md:p-12 text-center text-white"
+            className="neu-primary p-6 sm:p-8 md:p-12 text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
               Ready to List Your Property?
             </h2>
-            <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto text-xs sm:text-base">
               Join thousands of hosts who trust Restiqo to manage their
               properties and connect with travelers from around the world.
             </p>
@@ -947,7 +947,7 @@ export default function HomePage() {
               <Button
                 variant="default"
                 size="lg"
-                className="bg-white text-brand-primary"
+                className="bg-white text-brand-primary text-sm sm:text-base"
               >
                 Become a Host
               </Button>
