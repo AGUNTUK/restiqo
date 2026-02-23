@@ -91,7 +91,7 @@ function LoginContent() {
       <div className="w-full max-w-md">
         <div className="neu-xl p-6 sm:p-8 text-center">
           <Loader2 className="w-8 h-8 animate-spin text-brand-primary mx-auto mb-4" />
-          <p className="text-[#64748B]">Loading...</p>
+          <p className="text-[#64748B]">Loading…</p>
         </div>
       </div>
     )
@@ -118,63 +118,71 @@ function LoginContent() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div>
-            <label className="block text-sm font-medium text-[#1E293B] mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-[#1E293B] mb-2">
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" aria-hidden="true" />
               <input
+                id="email"
+                name="email"
                 type="email"
-                placeholder="Enter your email"
+                autoComplete="email"
+                placeholder="Enter your email…"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`neu-input w-full pl-12 pr-4 py-3.5 text-[#1E293B] ${
-                  errors.email ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
-                }`}
+                spellCheck={false}
+                className={`neu-input w-full pl-12 pr-4 py-3.5 text-[#1E293B] ${errors.email ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
+                  }`}
               />
             </div>
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 text-sm mt-1" role="alert">{errors.email}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1E293B] mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-[#1E293B] mb-2">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" aria-hidden="true" />
               <input
+                id="password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your password"
+                autoComplete="current-password"
+                placeholder="Enter your password…"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className={`neu-input w-full pl-12 pr-12 py-3.5 text-[#1E293B] ${
-                  errors.password ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
-                }`}
+                className={`neu-input w-full pl-12 pr-12 py-3.5 text-[#1E293B] ${errors.password ? 'shadow-[inset_4px_4px_8px_rgba(220,38,38,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)]' : ''
+                  }`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 focus:outline-none"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-4 top-1/2 -translate-y-1/2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded"
               >
                 {showPassword ? (
-                  <EyeOff className="w-5 h-5 text-[#64748B]" />
+                  <EyeOff className="w-5 h-5 text-[#64748B]" aria-hidden="true" />
                 ) : (
-                  <Eye className="w-5 h-5 text-[#64748B]" />
+                  <Eye className="w-5 h-5 text-[#64748B]" aria-hidden="true" />
                 )}
               </button>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              <p className="text-red-500 text-sm mt-1" role="alert">{errors.password}</p>
             )}
           </div>
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center">
               <input
+                id="remember-me"
+                name="remember-me"
                 type="checkbox"
-                className="w-4 h-4 rounded border-none text-brand-primary focus:ring-brand-primary neu-input"
+                className="w-4 h-4 rounded border-none text-brand-primary focus:ring-brand-primary neu-input focus-visible:ring-2 focus-visible:ring-brand-primary"
               />
               <span className="ml-2 text-[#64748B]">Remember me</span>
             </label>
@@ -189,7 +197,7 @@ function LoginContent() {
           <button
             type="submit"
             disabled={isLoading}
-            className="neu-button-primary w-full py-3.5 px-6 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="neu-button-primary w-full py-3.5 px-6 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
           >
             {isLoading ? (
               <>

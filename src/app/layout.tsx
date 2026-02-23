@@ -7,6 +7,8 @@ import { AuthProvider } from '@/lib/auth'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { OrganizationJsonLd, WebSiteJsonLd } from '@/components/seo'
+import { QueryProvider } from '@/lib/query/QueryProvider'
+import { ErrorBoundary } from '@/components/ui'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -90,56 +92,61 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#EEF2F6" />
         <OrganizationJsonLd />
         <WebSiteJsonLd />
       </head>
       <body className={`${poppins.variable} font-sans antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <AuthProvider>
-            {/* Desktop Navbar - Hidden on mobile */}
-            <div className="hidden md:block">
-              <Navbar />
-            </div>
-            
-            {/* Mobile Header - Hidden on desktop */}
-            <MobileHeader />
-            
-            <main className="min-h-screen pt-16 md:pt-0 has-mobile-nav">
-              {children}
-            </main>
-            
-            <Footer />
-            
-            {/* Mobile Bottom Navigation - Hidden on desktop */}
-            <MobileBottomNav />
-            
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: '#EEF2F6',
-                  border: 'none',
-                  borderRadius: '16px',
-                  boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.9)',
-                  color: '#1E293B',
-                  padding: '16px',
-                },
-                success: {
-                  iconTheme: {
-                    primary: '#88C51C',
-                    secondary: '#fff',
-                  },
-                },
-                error: {
-                  iconTheme: {
-                    primary: '#ef4444',
-                    secondary: '#fff',
-                  },
-                },
-              }}
-            />
-          </AuthProvider>
+          <QueryProvider>
+            <AuthProvider>
+              <ErrorBoundary>
+                {/* Desktop Navbar - Hidden on mobile */}
+                <div className="hidden md:block">
+                  <Navbar />
+                </div>
+
+                {/* Mobile Header - Hidden on desktop */}
+                <MobileHeader />
+
+                <main className="min-h-screen pt-16 md:pt-0 has-mobile-nav">
+                  {children}
+                </main>
+
+                <Footer />
+
+                {/* Mobile Bottom Navigation - Hidden on desktop */}
+                <MobileBottomNav />
+
+                <Toaster
+                  position="top-right"
+                  toastOptions={{
+                    duration: 4000,
+                    style: {
+                      background: '#EEF2F6',
+                      border: 'none',
+                      borderRadius: '16px',
+                      boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.9)',
+                      color: '#1E293B',
+                      padding: '16px',
+                    },
+                    success: {
+                      iconTheme: {
+                        primary: '#88C51C',
+                        secondary: '#fff',
+                      },
+                    },
+                    error: {
+                      iconTheme: {
+                        primary: '#ef4444',
+                        secondary: '#fff',
+                      },
+                    },
+                  }}
+                />
+              </ErrorBoundary>
+            </AuthProvider>
+          </QueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -40,7 +40,7 @@ export default function Card({ property, onWishlistToggle, isWishlisted = false 
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
-          
+
           {/* Property Type Badge */}
           <div className="absolute top-4 left-4">
             <span className="neu-badge-primary px-3 py-1.5 text-xs font-semibold uppercase tracking-wide">
@@ -54,12 +54,13 @@ export default function Card({ property, onWishlistToggle, isWishlisted = false 
               e.preventDefault()
               onWishlistToggle?.(property.id)
             }}
-            className="absolute top-4 right-4 p-2.5 rounded-full transition-all duration-200 neu-icon hover:scale-110"
+            aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+            className="absolute top-4 right-4 p-2.5 rounded-full transition-all duration-200 neu-icon hover:scale-110 focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <Heart
-              className={`w-5 h-5 transition-colors ${
-                isWishlisted ? 'fill-red-500 text-red-500' : 'text-[#64748B]'
-              }`}
+              className={`w-5 h-5 transition-colors ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-[#64748B]'
+                }`}
+              aria-hidden="true"
             />
           </button>
 

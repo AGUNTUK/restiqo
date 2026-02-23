@@ -32,21 +32,21 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const pathname = usePathname()
-  
+
   const { user, profile, isAuthenticated, isLoading, isHost, isAdmin, signOut } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      
+
       setIsScrolled(currentScrollY > 20)
-      
+
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
       }
-      
+
       setLastScrollY(currentScrollY)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -95,17 +95,15 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full overflow-visible transition-all duration-300 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      } ${
-        isScrolled
+      className={`hidden md:block fixed top-0 left-0 right-0 z-50 w-full overflow-visible transition-all duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
+        } ${isScrolled
           ? 'bg-[#EEF2F6] shadow-[8px_8px_16px_rgba(0,0,0,0.08),-8px_-8px_16px_rgba(255,255,255,0.9)]'
           : 'bg-[#EEF2F6] shadow-[4px_4px_8px_rgba(0,0,0,0.06),-4px_-4px_8px_rgba(255,255,255,0.8)]'
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="flex items-center justify-between h-16 sm:h-20 min-w-0">
-          
+
           <Link href="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -127,11 +125,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
-                  isActive(link.href)
-                    ? 'neu-nav-item-active'
-                    : 'neu-nav-item hover:shadow-[4px_4px_8px_rgba(0,0,0,0.06),-4px_-4px_8px_rgba(255,255,255,0.8)]'
-                }`}
+                className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${isActive(link.href)
+                  ? 'neu-nav-item-active'
+                  : 'neu-nav-item hover:shadow-[4px_4px_8px_rgba(0,0,0,0.06),-4px_-4px_8px_rgba(255,255,255,0.8)]'
+                  }`}
               >
                 {link.label}
               </Link>
@@ -147,7 +144,7 @@ export default function Navbar() {
                 </Button>
               </Link>
             )}
-            
+
             {isLoading ? (
               <div className="w-20 h-9 rounded-xl skeleton" />
             ) : isAuthenticated ? (
@@ -157,7 +154,10 @@ export default function Navbar() {
                     e.stopPropagation()
                     setIsProfileOpen(!isProfileOpen)
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl neu-button transition-all duration-200"
+                  aria-label="User menu"
+                  aria-expanded={isProfileOpen}
+                  aria-haspopup="menu"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl neu-button transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-primary"
                 >
                   {profile?.avatar_url ? (
                     <img
@@ -167,13 +167,13 @@ export default function Navbar() {
                     />
                   ) : (
                     <div className="w-8 h-8 rounded-full neu-icon-primary flex items-center justify-center">
-                      <User className="w-4 h-4" />
+                      <User className="w-4 h-4" aria-hidden="true" />
                     </div>
                   )}
                   <span className="text-sm font-medium text-[#1E293B] max-w-[100px] truncate">
                     {profile?.full_name || 'User'}
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-[#64748B] transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
                 </button>
 
                 {/* Profile Dropdown */}
@@ -316,12 +316,14 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200 flex-shrink-0 ml-2"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            className="md:hidden p-2.5 rounded-xl neu-button transition-all duration-200 flex-shrink-0 ml-2 focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-[#1E293B]" />
+              <X className="w-6 h-6 text-[#1E293B]" aria-hidden="true" />
             ) : (
-              <Menu className="w-6 h-6 text-[#1E293B]" />
+              <Menu className="w-6 h-6 text-[#1E293B]" aria-hidden="true" />
             )}
           </button>
 
@@ -344,11 +346,10 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block px-4 py-2.5 rounded-xl transition-all duration-200 ${
-                      isActive(link.href)
-                        ? 'neu-nav-item-active'
-                        : 'text-[#1E293B] neu-button'
-                    }`}
+                    className={`block px-4 py-2.5 rounded-xl transition-all duration-200 ${isActive(link.href)
+                      ? 'neu-nav-item-active'
+                      : 'text-[#1E293B] neu-button'
+                      }`}
                   >
                     {link.label}
                   </Link>

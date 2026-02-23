@@ -64,17 +64,17 @@ export default function MobileBottomNav() {
   // Role-based center button configuration
   const centerButton = isHost
     ? {
-        id: 'create',
-        href: '/host/listings/new',
-        label: 'Create',
-        icon: Plus,
-      }
+      id: 'create',
+      href: '/host/listings/new',
+      label: 'Create',
+      icon: Plus,
+    }
     : {
-        id: 'bookings',
-        href: '/dashboard?tab=bookings',
-        label: 'Bookings',
-        icon: Calendar,
-      }
+      id: 'bookings',
+      href: '/dashboard?tab=bookings',
+      label: 'Bookings',
+      icon: Calendar,
+    }
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
@@ -123,7 +123,7 @@ export default function MobileBottomNav() {
   }
 
   return (
-    <nav 
+    <nav
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
       style={{
         width: '100%',
@@ -181,7 +181,9 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0"
+                aria-label={item.label}
+                aria-current={active ? 'page' : undefined}
+                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0 focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 rounded-lg"
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>
@@ -211,18 +213,16 @@ export default function MobileBottomNav() {
 
                 {/* Icon */}
                 <Icon
-                  className={`w-5 h-5 mb-0.5 transition-all duration-200 ${
-                    active
-                      ? 'text-brand-primary stroke-[2.5]'
-                      : 'text-[#64748B] stroke-2'
-                  }`}
+                  className={`w-5 h-5 mb-0.5 transition-all duration-200 ${active
+                    ? 'text-brand-primary stroke-[2.5]'
+                    : 'text-[#64748B] stroke-2'
+                    }`}
                 />
 
                 {/* Label */}
                 <span
-                  className={`text-[10px] font-medium transition-all duration-200 ${
-                    active ? 'text-brand-primary' : 'text-[#94A3B8]'
-                  }`}
+                  className={`text-[10px] font-medium transition-all duration-200 ${active ? 'text-brand-primary' : 'text-[#94A3B8]'
+                    }`}
                 >
                   {item.label}
                 </span>
@@ -234,7 +234,8 @@ export default function MobileBottomNav() {
           <motion.button
             onClick={handleCenterClick}
             whileTap={{ scale: 0.9 }}
-            className="relative z-10 flex items-center justify-center flex-shrink-0"
+            aria-label={centerButton.label}
+            className="relative z-10 flex items-center justify-center flex-shrink-0 focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 rounded-full"
             style={{ margin: '0 2px', marginTop: '-30px' }}
           >
             {/* Glow Effect */}
@@ -312,7 +313,9 @@ export default function MobileBottomNav() {
                 onClick={() => handleNavClick(item)}
                 onTouchStart={() => setPressedItem(item.id)}
                 onTouchEnd={() => setPressedItem(null)}
-                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0"
+                aria-label={item.label}
+                aria-current={active ? 'page' : undefined}
+                className="relative flex flex-col items-center justify-center h-full flex-1 min-w-0 focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 rounded-lg"
               >
                 {/* Ripple Effect */}
                 <AnimatePresence>
@@ -342,18 +345,16 @@ export default function MobileBottomNav() {
 
                 {/* Icon */}
                 <Icon
-                  className={`w-5 h-5 mb-0.5 transition-all duration-200 ${
-                    active
-                      ? 'text-brand-primary stroke-[2.5]'
-                      : 'text-[#64748B] stroke-2'
-                  }`}
+                  className={`w-5 h-5 mb-0.5 transition-all duration-200 ${active
+                    ? 'text-brand-primary stroke-[2.5]'
+                    : 'text-[#64748B] stroke-2'
+                    }`}
                 />
 
                 {/* Label */}
                 <span
-                  className={`text-[10px] font-medium transition-all duration-200 ${
-                    active ? 'text-brand-primary' : 'text-[#94A3B8]'
-                  }`}
+                  className={`text-[10px] font-medium transition-all duration-200 ${active ? 'text-brand-primary' : 'text-[#94A3B8]'
+                    }`}
                 >
                   {item.label}
                 </span>

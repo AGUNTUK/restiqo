@@ -12,12 +12,12 @@
   --color-accent-light: #9dd42a;
   --color-secondary: #218877;
   --color-secondary-dark: #1a6b5d;
-  
+
   /* Text Colors */
   --color-text-primary: #1E293B;
   --color-text-secondary: #64748B;
   --color-text-muted: #94A3B8;
-  
+
   /* Neumorphism Shadow Variables */
   --shadow-dark: rgba(0, 0, 0, 0.08);
   --shadow-light: rgba(255, 255, 255, 0.9);
@@ -25,10 +25,10 @@
   --shadow-light-sm: rgba(255, 255, 255, 0.8);
   --shadow-dark-lg: rgba(0, 0, 0, 0.1);
   --shadow-light-lg: rgba(255, 255, 255, 0.95);
-  
+
   /* Font */
   --font-poppins: 'Poppins', system-ui, -apple-system, sans-serif;
-  
+
   /* Border Radius */
   --radius-sm: 12px;
   --radius-md: 16px;
@@ -52,39 +52,39 @@
   --color-brand-text: #1E293B;
   --color-brand-text-secondary: #64748B;
   --color-brand-text-muted: #94A3B8;
-  
+
   --font-family-sans: var(--font-poppins), 'Poppins', system-ui, -apple-system, sans-serif;
-  
+
   /* Neumorphism Shadows */
-  --shadow-neu: 
+  --shadow-neu:
     8px 8px 16px rgba(0, 0, 0, 0.08),
     -8px -8px 16px rgba(255, 255, 255, 0.9);
-  
-  --shadow-neu-sm: 
+
+  --shadow-neu-sm:
     4px 4px 8px rgba(0, 0, 0, 0.06),
     -4px -4px 8px rgba(255, 255, 255, 0.8);
-  
-  --shadow-neu-lg: 
+
+  --shadow-neu-lg:
     12px 12px 24px rgba(0, 0, 0, 0.1),
     -12px -12px 24px rgba(255, 255, 255, 0.95);
-  
-  --shadow-neu-xl: 
+
+  --shadow-neu-xl:
     16px 16px 32px rgba(0, 0, 0, 0.1),
     -16px -16px 32px rgba(255, 255, 255, 0.95);
-  
-  --shadow-neu-inset: 
+
+  --shadow-neu-inset:
     inset 6px 6px 12px rgba(0, 0, 0, 0.08),
     inset -6px -6px 12px rgba(255, 255, 255, 0.9);
-  
-  --shadow-neu-inset-sm: 
+
+  --shadow-neu-inset-sm:
     inset 4px 4px 8px rgba(0, 0, 0, 0.06),
     inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-  
-  --shadow-neu-primary: 
+
+  --shadow-neu-primary:
     8px 8px 16px rgba(252, 153, 5, 0.25),
     -8px -8px 16px rgba(255, 255, 255, 0.9);
-  
-  --shadow-neu-accent: 
+
+  --shadow-neu-accent:
     8px 8px 16px rgba(136, 197, 28, 0.25),
     -8px -8px 16px rgba(255, 255, 255, 0.9);
 }
@@ -100,6 +100,19 @@ html {
   overflow-x: hidden;
 }
 
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
@@ -111,7 +124,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-poppins);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -145,7 +163,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px var(--shadow-dark),
     -8px -8px 16px var(--shadow-light);
 }
@@ -153,7 +171,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-sm {
   background: var(--color-background);
   border-radius: var(--radius-sm);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
 }
@@ -161,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-lg {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     12px 12px 24px var(--shadow-dark-lg),
     -12px -12px 24px var(--shadow-light-lg);
 }
@@ -169,7 +187,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-xl {
   background: var(--color-background);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     16px 16px 32px var(--shadow-dark-lg),
     -16px -16px 32px var(--shadow-light-lg);
 }
@@ -178,7 +196,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-inset {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px var(--shadow-dark),
     inset -6px -6px 12px var(--shadow-light);
 }
@@ -186,7 +204,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-inset-sm {
   background: var(--color-background);
   border-radius: var(--radius-sm);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-dark-sm),
     inset -4px -4px 8px var(--shadow-light-sm);
 }
@@ -194,7 +212,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-inset-lg {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     inset 8px 8px 16px var(--shadow-dark),
     inset -8px -8px 16px var(--shadow-light);
 }
@@ -203,7 +221,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-primary {
   background: var(--color-primary);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px rgba(252, 153, 5, 0.25),
     -8px -8px 16px var(--shadow-light);
 }
@@ -211,7 +229,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-accent {
   background: var(--color-accent);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px rgba(136, 197, 28, 0.25),
     -8px -8px 16px var(--shadow-light);
 }
@@ -223,7 +241,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-button {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     6px 6px 12px var(--shadow-dark),
     -6px -6px 12px var(--shadow-light);
   border: none;
@@ -233,13 +251,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .neu-button:hover {
-  box-shadow: 
+  box-shadow:
     8px 8px 16px var(--shadow-dark),
     -8px -8px 16px var(--shadow-light);
 }
 
 .neu-button:active {
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px var(--shadow-dark),
     inset -6px -6px 12px var(--shadow-light);
 }
@@ -247,7 +265,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-button-primary {
   background: var(--color-primary);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     6px 6px 12px rgba(252, 153, 5, 0.3),
     -6px -6px 12px var(--shadow-light);
   border: none;
@@ -257,14 +275,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .neu-button-primary:hover {
-  box-shadow: 
+  box-shadow:
     8px 8px 16px rgba(252, 153, 5, 0.35),
     -8px -8px 16px var(--shadow-light);
   background: var(--color-primary-dark);
 }
 
 .neu-button-primary:active {
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px rgba(0, 0, 0, 0.15),
     inset -6px -6px 12px rgba(255, 255, 255, 0.4);
 }
@@ -272,7 +290,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-button-accent {
   background: var(--color-accent);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     6px 6px 12px rgba(136, 197, 28, 0.3),
     -6px -6px 12px var(--shadow-light);
   border: none;
@@ -282,14 +300,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .neu-button-accent:hover {
-  box-shadow: 
+  box-shadow:
     8px 8px 16px rgba(136, 197, 28, 0.35),
     -8px -8px 16px var(--shadow-light);
   background: var(--color-accent-dark);
 }
 
 .neu-button-accent:active {
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px rgba(0, 0, 0, 0.15),
     inset -6px -6px 12px rgba(255, 255, 255, 0.4);
 }
@@ -307,7 +325,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-button-ghost:hover {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
 }
@@ -319,7 +337,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-input {
   background: var(--color-background);
   border-radius: var(--radius-sm);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-dark-sm),
     inset -4px -4px 8px var(--shadow-light-sm);
   border: none;
@@ -329,7 +347,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-input:focus {
   outline: none;
-  box-shadow: 
+  box-shadow:
     inset 5px 5px 10px var(--shadow-dark),
     inset -5px -5px 10px var(--shadow-light);
 }
@@ -345,7 +363,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-card {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     10px 10px 20px var(--shadow-dark),
     -10px -10px 20px var(--shadow-light);
   transition: all 0.3s ease;
@@ -353,7 +371,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .neu-card:hover {
-  box-shadow: 
+  box-shadow:
     12px 12px 24px var(--shadow-dark-lg),
     -12px -12px 24px var(--shadow-light-lg);
 }
@@ -361,7 +379,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-card-flat {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     6px 6px 12px var(--shadow-dark-sm),
     -6px -6px 12px var(--shadow-light-sm);
   transition: all 0.3s ease;
@@ -374,7 +392,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-badge {
   background: var(--color-background);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     3px 3px 6px var(--shadow-dark-sm),
     -3px -3px 6px var(--shadow-light-sm);
   color: var(--color-text-secondary);
@@ -384,7 +402,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-badge-primary {
   background: var(--color-primary);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     3px 3px 6px rgba(252, 153, 5, 0.25),
     -3px -3px 6px var(--shadow-light-sm);
   color: white;
@@ -394,7 +412,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-badge-accent {
   background: var(--color-accent);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     3px 3px 6px rgba(136, 197, 28, 0.25),
     -3px -3px 6px var(--shadow-light-sm);
   color: white;
@@ -408,7 +426,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-navbar {
   background: var(--color-background);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px var(--shadow-dark),
     -8px -8px 16px var(--shadow-light);
 }
@@ -422,7 +440,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-nav-item:hover {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
   color: var(--color-text-primary);
@@ -430,7 +448,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-nav-item-active {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-dark-sm),
     inset -4px -4px 8px var(--shadow-light-sm);
   color: var(--color-primary);
@@ -443,7 +461,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-modal {
   background: var(--color-background);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     20px 20px 40px var(--shadow-dark-lg),
     -20px -20px 40px var(--shadow-light-lg);
 }
@@ -460,7 +478,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-tabs {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     6px 6px 12px var(--shadow-dark-sm),
     -6px -6px 12px var(--shadow-light-sm);
 }
@@ -478,7 +496,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-tab-active {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
   color: var(--color-primary);
@@ -491,7 +509,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-icon {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
   display: flex;
@@ -502,7 +520,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-icon-inset {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-dark-sm),
     inset -3px -3px 6px var(--shadow-light-sm);
   display: flex;
@@ -513,7 +531,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-icon-primary {
   background: var(--color-primary);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px rgba(252, 153, 5, 0.25),
     -4px -4px 8px var(--shadow-light-sm);
   display: flex;
@@ -529,7 +547,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-search {
   background: var(--color-background);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px var(--shadow-dark),
     inset -6px -6px 12px var(--shadow-light);
 }
@@ -537,7 +555,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-search-raised {
   background: var(--color-background);
   border-radius: var(--radius-xl);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px var(--shadow-dark),
     -8px -8px 16px var(--shadow-light);
 }
@@ -548,7 +566,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-footer {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     0 -8px 16px var(--shadow-dark);
 }
 
@@ -558,12 +576,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-divider {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--shadow-dark),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--shadow-dark),
+      transparent);
 }
 
 /* ============================================
@@ -583,7 +599,7 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb {
   background: var(--color-primary);
   border-radius: 10px;
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 4px rgba(255, 255, 255, 0.3),
     inset -2px -2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -597,18 +613,24 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pulse-soft {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.85;
   }
@@ -618,19 +640,23 @@ h1, h2, h3, h4, h5, h6 {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 @keyframes press {
-  0%, 100% {
-    box-shadow: 
+
+  0%,
+  100% {
+    box-shadow:
       6px 6px 12px var(--shadow-dark),
       -6px -6px 12px var(--shadow-light);
   }
+
   50% {
-    box-shadow: 
+    box-shadow:
       inset 6px 6px 12px var(--shadow-dark),
       inset -6px -6px 12px var(--shadow-light);
   }
@@ -645,12 +671,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.02) 0%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(0, 0, 0, 0.02) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.02) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(0, 0, 0, 0.02) 100%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -660,12 +684,10 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-background) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    var(--color-background) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-background) 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      var(--color-background) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius-sm);
@@ -689,14 +711,14 @@ h1, h2, h3, h4, h5, h6 {
 .neu-filter {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
   transition: all 0.2s ease;
 }
 
 .neu-filter:hover {
-  box-shadow: 
+  box-shadow:
     6px 6px 12px var(--shadow-dark),
     -6px -6px 12px var(--shadow-light);
 }
@@ -704,7 +726,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-filter-active {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-dark-sm),
     inset -4px -4px 8px var(--shadow-light-sm);
   color: var(--color-primary);
@@ -717,7 +739,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-panel {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     8px 8px 16px var(--shadow-dark),
     -8px -8px 16px var(--shadow-light);
 }
@@ -725,7 +747,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-panel-inset {
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     inset 6px 6px 12px var(--shadow-dark),
     inset -6px -6px 12px var(--shadow-light);
 }
@@ -737,7 +759,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-tooltip {
   background: var(--color-background);
   border-radius: var(--radius-sm);
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark),
     -4px -4px 8px var(--shadow-light);
   color: var(--color-text-primary);
@@ -750,7 +772,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-dropdown {
   background: var(--color-background);
   border-radius: var(--radius-md);
-  box-shadow: 
+  box-shadow:
     8px 8px 20px var(--shadow-dark-lg),
     -8px -8px 20px var(--shadow-light-lg);
 }
@@ -761,7 +783,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-dropdown-item:hover {
   background: var(--color-background);
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-dark-sm),
     inset -3px -3px 6px var(--shadow-light-sm);
 }
@@ -773,7 +795,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-avatar {
   background: var(--color-background);
   border-radius: 50%;
-  box-shadow: 
+  box-shadow:
     4px 4px 8px var(--shadow-dark-sm),
     -4px -4px 8px var(--shadow-light-sm);
 }
@@ -781,7 +803,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-avatar-inset {
   background: var(--color-background);
   border-radius: 50%;
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-dark-sm),
     inset -3px -3px 6px var(--shadow-light-sm);
 }
@@ -793,7 +815,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-progress {
   background: var(--color-background);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 6px var(--shadow-dark-sm),
     inset -3px -3px 6px var(--shadow-light-sm);
 }
@@ -801,7 +823,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-progress-bar {
   background: var(--color-primary);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     2px 2px 4px rgba(252, 153, 5, 0.3),
     -2px -2px 4px rgba(255, 255, 255, 0.5);
 }
@@ -813,7 +835,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-toggle {
   background: var(--color-background);
   border-radius: var(--radius-full);
-  box-shadow: 
+  box-shadow:
     inset 4px 4px 8px var(--shadow-dark-sm),
     inset -4px -4px 8px var(--shadow-light-sm);
 }
@@ -821,7 +843,7 @@ h1, h2, h3, h4, h5, h6 {
 .neu-toggle-handle {
   background: var(--color-background);
   border-radius: 50%;
-  box-shadow: 
+  box-shadow:
     3px 3px 6px var(--shadow-dark-sm),
     -3px -3px 6px var(--shadow-light-sm);
   transition: all 0.2s ease;
@@ -829,7 +851,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .neu-toggle-active .neu-toggle-handle {
   background: var(--color-primary);
-  box-shadow: 
+  box-shadow:
     3px 3px 6px rgba(252, 153, 5, 0.3),
     -3px -3px 6px var(--shadow-light-sm);
 }
@@ -842,11 +864,11 @@ h1, h2, h3, h4, h5, h6 {
   .neu-card {
     border-radius: var(--radius-md);
   }
-  
+
   .neu-lg {
     border-radius: var(--radius-md);
   }
-  
+
   .neu-xl {
     border-radius: var(--radius-lg);
   }
@@ -872,7 +894,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .focus-ring:focus {
   outline: none;
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(252, 153, 5, 0.3),
     6px 6px 12px var(--shadow-dark),
     -6px -6px 12px var(--shadow-light);
@@ -964,7 +986,7 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(238, 242, 246, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.08),
     0 2px 10px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -1057,7 +1079,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 2px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
 }
 
 .mobile-nav-center-button-label {
@@ -1087,6 +1109,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -1094,10 +1117,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes center-button-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.6;
     transform: scale(1.1);
@@ -1109,6 +1135,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(0);
     opacity: 0.5;
   }
+
   to {
     transform: scale(2.5);
     opacity: 0;
@@ -1136,7 +1163,7 @@ h1, h2, h3, h4, h5, h6 {
   .has-mobile-nav {
     padding-bottom: 100px;
   }
-  
+
   /* Hide desktop navigation on mobile */
   .desktop-only {
     display: none !important;
@@ -1144,6 +1171,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 769px) {
+
   /* Hide mobile navigation on desktop */
   .mobile-only {
     display: none !important;
@@ -1168,20 +1196,20 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 
 @media (max-width: 640px) {
+
   /* Smaller card padding on mobile */
   .neu-card {
     padding: 12px;
   }
-  
+
   /* Adjust font sizes */
   .text-responsive {
     font-size: 0.875rem;
   }
-  
+
   /* Smaller buttons on mobile */
   .btn-mobile-sm {
     padding: 8px 16px;
     font-size: 0.75rem;
   }
 }
-

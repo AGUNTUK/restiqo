@@ -307,7 +307,7 @@ export default function HomePage() {
     { name: 'Bogra', type: 'city', region: 'Rajshahi Division' },
     { name: 'Cox\'s Bazar', type: 'city', region: 'Chittagong Division' },
     { name: 'Savar', type: 'city', region: 'Dhaka Division' },
-    
+
     // Dhaka Police Stations
     { name: 'Dhanmondi', type: 'area', region: 'Dhaka' },
     { name: 'Gulshan', type: 'area', region: 'Dhaka' },
@@ -358,7 +358,7 @@ export default function HomePage() {
     { name: 'Kalabagan', type: 'area', region: 'Dhaka' },
     { name: 'New Market', type: 'area', region: 'Dhaka' },
     { name: 'Old Dhaka', type: 'area', region: 'Dhaka' },
-    
+
     // Tourist Destinations
     { name: 'Sundarbans', type: 'tourist', region: 'Khulna/Bagerhat' },
     { name: 'Saint Martin\'s Island', type: 'tourist', region: 'Cox\'s Bazar' },
@@ -429,7 +429,7 @@ export default function HomePage() {
   ]
 
   // Filter locations based on search input
-  const filteredLocations = bangladeshLocations.filter(loc => 
+  const filteredLocations = bangladeshLocations.filter(loc =>
     loc.name.toLowerCase().includes(searchData.location.toLowerCase()) ||
     loc.region.toLowerCase().includes(searchData.location.toLowerCase())
   ).slice(0, 10)
@@ -514,7 +514,7 @@ export default function HomePage() {
             <div className="relative z-10 p-4 sm:p-8 lg:p-10">
               <div className="text-center mb-6 sm:mb-10">
                 <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#1E293B] bg-white/80 border border-white shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
-                  Ready For Your Next Adventure?
+                  Ready For Your Next Adventure…
                 </span>
                 <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#1E293B] mt-3 sm:mt-5 mb-3 sm:mb-5">
                   Discover Your Perfect
@@ -538,11 +538,10 @@ export default function HomePage() {
                         key={tab.id}
                         type="button"
                         onClick={() => handleTabChange(tab.id)}
-                        className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-2 sm:py-2.5 rounded-full font-semibold transition-all duration-200 text-xs sm:text-sm ${
-                          activeTab === tab.id
-                            ? 'text-white bg-[linear-gradient(135deg,var(--color-primary),var(--color-accent))] shadow-[0_10px_20px_rgba(252,153,5,0.28)]'
-                            : 'text-[#64748B] hover:bg-white/70'
-                        }`}
+                        className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-2 sm:py-2.5 rounded-full font-semibold transition-all duration-200 text-xs sm:text-sm ${activeTab === tab.id
+                          ? 'text-white bg-[linear-gradient(135deg,var(--color-primary),var(--color-accent))] shadow-[0_10px_20px_rgba(252,153,5,0.28)]'
+                          : 'text-[#64748B] hover:bg-white/70'
+                          }`}
                       >
                         <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                         <span className="whitespace-nowrap">{tab.label}</span>
@@ -554,14 +553,17 @@ export default function HomePage() {
                 <form onSubmit={handleSearch}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
                     <div className="lg:col-span-1 relative" ref={locationDropdownRef}>
-                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                      <label htmlFor="search-location" className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                         Location
                       </label>
                       <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" aria-hidden="true" />
                         <input
+                          id="search-location"
+                          name="location"
                           type="text"
-                          placeholder="Where are you going?"
+                          autoComplete="off"
+                          placeholder="Where are you going…"
                           value={searchData.location}
                           onChange={(e) => {
                             setSearchData({ ...searchData, location: e.target.value })
@@ -573,7 +575,7 @@ export default function HomePage() {
                       </div>
 
                       {isLocationDropdownOpen && searchData.location.length > 0 && filteredLocations.length > 0 && (
-                        <div className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-2 z-[100] max-h-64 overflow-y-auto">
+                        <div className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-2 z-[100] max-h-64 overflow-y-auto" role="listbox">
                           {filteredLocations.map((loc, index) => (
                             <button
                               key={index}
@@ -583,9 +585,10 @@ export default function HomePage() {
                                 setIsLocationDropdownOpen(false)
                               }}
                               className="neu-dropdown-item w-full text-left px-3 py-2 sm:py-2.5 rounded-xl flex items-center justify-between"
+                              role="option"
                             >
                               <div className="flex items-center gap-2">
-                                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary" />
+                                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary" aria-hidden="true" />
                                 <span className="font-medium text-[#1E293B] text-xs sm:text-base">{loc.name}</span>
                               </div>
                               <span className="text-[10px] sm:text-xs text-[#64748B]">{loc.region}</span>
@@ -596,12 +599,14 @@ export default function HomePage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                      <label htmlFor="search-checkin" className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                         Check In
                       </label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" aria-hidden="true" />
                         <input
+                          id="search-checkin"
+                          name="checkIn"
                           type="date"
                           value={searchData.checkIn}
                           onChange={(e) =>
@@ -613,12 +618,14 @@ export default function HomePage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                      <label htmlFor="search-checkout" className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                         Check Out
                       </label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" aria-hidden="true" />
                         <input
+                          id="search-checkout"
+                          name="checkOut"
                           type="date"
                           value={searchData.checkOut}
                           onChange={(e) =>
@@ -630,23 +637,29 @@ export default function HomePage() {
                     </div>
 
                     <div className="relative z-[60]" ref={guestDropdownRef}>
-                      <label className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
+                      <label id="guests-label" className="block text-xs sm:text-sm font-medium text-[#1E293B] mb-1.5 sm:mb-2">
                         Guests
                       </label>
                       <button
                         type="button"
+                        id="search-guests"
                         onClick={() => setIsGuestDropdownOpen(!isGuestDropdownOpen)}
-                        className="neu-input w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-[#1E293B] text-left flex items-center justify-between text-xs sm:text-base !rounded-full bg-white/90"
+                        aria-expanded={isGuestDropdownOpen}
+                        aria-haspopup="listbox"
+                        aria-labelledby="guests-label"
+                        className="neu-input w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-[#1E293B] text-left flex items-center justify-between text-xs sm:text-base !rounded-full bg-white/90 focus-visible:ring-2 focus-visible:ring-brand-primary"
                       >
                         <span className="truncate">{getGuestDisplayText()}</span>
-                        <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#64748B] transition-transform ${isGuestDropdownOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
                       </button>
-                      <Users className="absolute left-3 top-[30px] sm:top-[38px] w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" />
+                      <Users className="absolute left-3 top-[30px] sm:top-[38px] w-4 h-4 sm:w-5 sm:h-5 text-[#64748B]" aria-hidden="true" />
 
                       {isGuestDropdownOpen && (
                         <div
                           className="absolute left-0 right-0 top-full mt-2 neu-dropdown p-4 z-[100]"
                           onClick={(e) => e.stopPropagation()}
+                          role="listbox"
+                          aria-labelledby="guests-label"
                         >
                           <div className="flex items-center justify-between py-3">
                             <div>
@@ -660,12 +673,13 @@ export default function HomePage() {
                                   e.stopPropagation()
                                   updateGuests('adults', false)
                                 }}
-                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                                aria-label="Decrease adults"
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-primary"
                                 disabled={guestCounts.adults <= 1}
                               >
-                                <Minus className="w-4 h-4" />
+                                <Minus className="w-4 h-4" aria-hidden="true" />
                               </button>
-                              <div className="w-10 h-8 overflow-hidden relative">
+                              <div className="w-10 h-8 overflow-hidden relative" aria-live="polite" aria-atomic="true">
                                 <motion.span
                                   key={guestCounts.adults}
                                   initial={{ y: -20, opacity: 0 }}
@@ -683,9 +697,10 @@ export default function HomePage() {
                                   e.stopPropagation()
                                   updateGuests('adults', true)
                                 }}
-                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
+                                aria-label="Increase adults"
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-primary"
                               >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-4 h-4" aria-hidden="true" />
                               </button>
                             </div>
                           </div>
@@ -702,12 +717,13 @@ export default function HomePage() {
                                   e.stopPropagation()
                                   updateGuests('children', false)
                                 }}
-                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                                aria-label="Decrease children"
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brand-primary"
                                 disabled={guestCounts.children <= 0}
                               >
-                                <Minus className="w-4 h-4" />
+                                <Minus className="w-4 h-4" aria-hidden="true" />
                               </button>
-                              <div className="w-10 h-8 overflow-hidden relative">
+                              <div className="w-10 h-8 overflow-hidden relative" aria-live="polite" aria-atomic="true">
                                 <motion.span
                                   key={guestCounts.children}
                                   initial={{ y: -20, opacity: 0 }}
@@ -725,9 +741,10 @@ export default function HomePage() {
                                   e.stopPropagation()
                                   updateGuests('children', true)
                                 }}
-                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200"
+                                aria-label="Increase children"
+                                className="w-8 h-8 rounded-xl neu-button flex items-center justify-center transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-primary"
                               >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-4 h-4" aria-hidden="true" />
                               </button>
                             </div>
                           </div>
