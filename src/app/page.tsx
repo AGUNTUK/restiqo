@@ -18,6 +18,7 @@ import {
 import Button from '@/components/ui/Button'
 import Link from 'next/link'
 import Card from '@/components/ui/Card'
+import Carousel from '@/components/ui/Carousel'
 
 // Mock data for featured properties
 const featuredApartments = [
@@ -789,8 +790,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
-            {featuredApartments.map((property, index) => (
+          <Carousel
+            items={featuredApartments}
+            renderItem={(property, index) => (
               <motion.div
                 key={property.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -801,8 +803,10 @@ export default function HomePage() {
               >
                 <Card property={property} />
               </motion.div>
-            ))}
-          </div>
+            )}
+            itemWidth="w-[280px] sm:w-[320px] lg:w-[380px]"
+            gap="gap-4 sm:gap-6"
+          />
         </div>
       </section>
 
@@ -826,8 +830,9 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
-              {popularHotels.map((property, index) => (
+            <Carousel
+              items={popularHotels}
+              renderItem={(property, index) => (
                 <motion.div
                   key={property.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -838,8 +843,10 @@ export default function HomePage() {
                 >
                   <Card property={property} />
                 </motion.div>
-              ))}
-            </div>
+              )}
+              itemWidth="w-[280px] sm:w-[320px] lg:w-[380px]"
+              gap="gap-4 sm:gap-6"
+            />
           </div>
         </div>
       </section>
@@ -863,8 +870,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 items-stretch">
-            {trendingTours.map((property, index) => (
+          <Carousel
+            items={trendingTours}
+            renderItem={(property, index) => (
               <motion.div
                 key={property.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -875,8 +883,10 @@ export default function HomePage() {
               >
                 <Card property={property} />
               </motion.div>
-            ))}
-          </div>
+            )}
+            itemWidth="w-[280px] sm:w-[320px] lg:w-[380px]"
+            gap="gap-4 sm:gap-6"
+          />
         </div>
       </section>
 
